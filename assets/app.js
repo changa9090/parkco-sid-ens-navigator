@@ -36,7 +36,7 @@
       specName: "박창민 대표변호사 (Chang Min Park)",
       specRole: "QLS Accredited Specialist in Immigration Law",
       specSlogan: "\"삶에 집중하세요, 법률은 저희가 맡겠습니다.\"",
-      specMeta: "법무법인 박앤코 (PNC Legal Pty Ltd t/a Park & Co Lawyers · Underwood QLD) | 공식 이메일: enquiry@parkcolawyers.com",
+      specMeta: "법무법인 박앤코 (PNC Legal Pty Ltd t/a Park & Co Lawyers · Underwood QLD) | 공식 상담신청: https://parklawyers.com.au/links/?lang=ko",
       specCta: "변호사 1:1 고용주 스폰서 상담 신청 →",
       st1Over: "CSIT (CORE SKILLS · 186)",
       st1Sub: "FY26–27 최소 기본급 (슈퍼 별도)",
@@ -96,10 +96,10 @@
       pillTrt: "2. 186 TRT 2-Yr & 482 1-Yr FTE Calc",
       pill8607: "3. Condition 8607 (180/365d) Clock",
       pillSaf: "4. SAF Levy · VAC · Brief Export",
-      specName: "Chang Min Park | Principal Lawyer",
+      specName: "Chang Min Park | Legal Practitioner Director",
       specRole: "QLS Accredited Specialist in Immigration Law",
       specSlogan: "\"Focus on your life; we will take care of the law.\"",
-      specMeta: "PNC Legal Pty Ltd t/a Park & Co Lawyers (Underwood QLD) | Official Email: enquiry@parkcolawyers.com",
+      specMeta: "PNC Legal Pty Ltd t/a Park & Co Lawyers (Underwood QLD) | Official Inquiry: https://parklawyers.com.au/links/",
       specCta: "Book a 1:1 Employer Sponsored Consultation →",
       st1Over: "CSIT (CORE SKILLS · 186)",
       st1Sub: "FY26–27 Min Base Salary (Excl. Super)",
@@ -592,7 +592,7 @@
       `• Offered Base Salary / AMSR: AUD $${Number(salary).toLocaleString()} / AMSR AUD $${Number(amsr).toLocaleString()}`,
       `• Experience & Age: ${trtMode} | Age ${age} | Employer 1: ${m1}m + Employer 2: ${m2}m`,
       `• Condition 8607 Reference: Cessation ${cease} (180d consecutive / 365d cumulative window)`,
-      `• Official Legal Inquiry: Park & Co Lawyers (enquiry@parkcolawyers.com)`
+      `• Official Legal Inquiry: Park & Co Lawyers (https://parklawyers.com.au/links/)`
     ].join("\n") : [
       "=== [PNC Legal Pty Ltd t/a Park & Co Lawyers | 호주 고용주 스폰서 (482·186·494) 진단 요약서] ===",
       `• 진단 일시: ${new Date().toISOString().slice(0, 10)} (FY2026–27 CSIT $79,423 / SSIT $146,576 기준)`,
@@ -600,14 +600,19 @@
       `• 제안 기본급 / 시장연봉(AMSR): AUD $${Number(salary).toLocaleString()} / AMSR AUD $${Number(amsr).toLocaleString()}`,
       `• 경력 및 연령 진단: ${trtMode} | 만 ${age}세 | 제1직장 ${m1}개월 + 제2직장 ${m2}개월`,
       `• Condition 8607 기준일: 퇴사일 ${cease} (180일 연속 / 365일 누적 유예 적용)`,
-      `• 공식 법률 자문 문의: Park & Co Lawyers (enquiry@parkcolawyers.com)`
+      `• 공식 법률 자문 문의: Park & Co Lawyers (https://parklawyers.com.au/links/?lang=ko)`
     ].join("\n");
 
     previewEl.textContent = text;
     if (emailBtn) {
-      const subject = encodeURIComponent(`[Park & Co Employer Sponsored Inquiry] ${visa} (Salary $${Number(salary).toLocaleString()}, Age ${age})`);
-      const body = encodeURIComponent(text + "\n\n[Additional Details]\n- Nominated Occupation (ANZSCO): \n- Current Visa & Expiry Date: \n");
-      emailBtn.href = `mailto:enquiry@parkcolawyers.com?subject=${subject}&body=${body}`;
+      emailBtn.href = en ? "https://parklawyers.com.au/links/" : "https://parklawyers.com.au/links/?lang=ko";
+      emailBtn.target = "_blank";
+      emailBtn.rel = "noopener";
+      emailBtn.onclick = function () {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).catch(function () {});
+        }
+      };
     }
   }
 
@@ -899,7 +904,8 @@
     "가족법·재산분할": "Family Law & Property",
     "위기·ART": "Visa Crisis & ART",
     "← 전체 네비게이터 허브": "← All Navigators Hub",
-    "박창민 대표변호사 (Chang Min Park)": "Chang Min Park (Principal Solicitor)",
+    "💬 온라인 상담신청": "💬 Enquire Online",
+    "박창민 대표변호사 (Chang Min Park)": "Chang Min Park (Legal Practitioner Director)",
     "\"삶에 집중하세요, 법률은 저희가 맡겠습니다.\"": "\"You focus on life, we'll handle the law.\"",
     "법무법인 박앤코 (PNC Legal Pty Ltd t/a Park & Co Lawyers)": "PNC Legal Pty Ltd t/a Park & Co Lawyers",
     "법령 및 주정부 심사 근거": "Statutory & State Nomination Authority",
@@ -1027,10 +1033,12 @@
     "FY2026–27 총비용 & Subclass 191 영주권 전환 판정": "FY2026–27 Total Statutory Cost & Subclass 191 PR Assessment",
     "내 기술이민 점수(Schedule 6D) & 주정부 노미네이션 진단서 복사 · 인쇄(PDF) & 상담 메일 발송": "Copy, Print (PDF) & Email Your GSM Points & State Nomination Brief",
     "위 모듈에서 계산된 189·190·491 점수, 거주 주 노미네이션 적격 판정, 총비용 요약문을 즉시 복사하거나 상담 메일에 첨부할 수 있어요.": "Copy or email your calculated 189/190/491 points, state nomination eligibility, and fee breakdown directly to Park & Co.",
+    "내 고용주 스폰서 시뮬레이션 결과 요약서 복사 · 인쇄(PDF) & 온라인 상담 신청": "Copy, Print (PDF) & Enquire Online with Your Employer Sponsored Brief",
+    "위 모듈에서 입력하신 연봉(CSIT/SSIT/AMSR), 186 TRT 경력, Condition 8607 날짜, SAF Levy 산출 내역을 원클릭으로 복사하여 공식 온라인 상담 신청 시 붙여넣을 수 있어요.": "Copy your simulated salary (CSIT/SSIT/AMSR), 186 TRT tenure, Condition 8607 clock, and SAF Levy breakdown to attach to your Park & Co online inquiry.",
     "📋 진단 요약 클립보드 복사": "📋 Copy Diagnostic Summary",
     "📋 긴급 진단서 클립보드 복사": "📋 Copy Urgent Diagnostic Brief",
     "🖨️ PDF / 브리프 인쇄": "🖨️ Print / Save PDF",
-    "✉️ 진단 결과 담아 박앤코에 이메일 문의 →": "✉️ Email Diagnostic Brief to Park & Co →",
+    "💬 진단 요약 복사 & 박앤코 온라인 상담 →": "💬 Copy Brief & Enquire Online →",
     "🚨 진단 결과 담아 박앤코 긴급 자문 요청 →": "🚨 Email Urgent Brief to Park & Co →",
     "구분": "Category",
     "공식 법령 · 주정부 이민 포털 및 링크": "Official Legislation / State Portal & Link",
@@ -1068,6 +1076,9 @@
     document.querySelectorAll(".parkco-svc-link").forEach(function (lnk) {
       var h = isEn ? lnk.getAttribute("data-en-href") : lnk.getAttribute("data-ko-href");
       if (h) lnk.setAttribute("href", h);
+    });
+    document.querySelectorAll("a.cta-enquiry").forEach(function (a) {
+      a.setAttribute("href", isEn ? "https://parklawyers.com.au/links/" : "https://parklawyers.com.au/links/?lang=ko");
     });
     var walk = function (el) {
       if (!el || el.tagName === "SCRIPT" || el.tagName === "STYLE" || el.tagName === "PRE") return;
