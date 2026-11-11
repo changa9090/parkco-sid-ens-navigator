@@ -1,6 +1,6 @@
 {
   "as_at_date": "1 July 2026 (FY2026–27 Indexed)",
-  "last_verified_iso": "2026-11-09T07:40:20+10:00",
+  "last_verified_iso": "2026-11-11T22:06:38+10:00",
   "income_thresholds": {
     "history": [
       {
@@ -180,10 +180,10 @@
     "occupation_match": "Same ANZSCO 4-digit unit group as most recently approved 482/457 nomination",
     "age_limit_standard": 45,
     "age_exemptions": [
-      "Academic (University Lecturer / Faculty Head at Level B/C/D/E)",
-      "Regional Medical Practitioner (3 yrs on 457/482 in regional area)",
-      "High Income Earner (earning >= Fair Work High Income Threshold $190,100 for 2 yrs on 482)",
-      "DAMA Labour Agreement Age Concession (up to 50 or 55 depending on DAMA & Skill Level)"
+      "Academic (University Lecturer / Faculty Head at Level B/C/D/E · LIN 19/216)",
+      "Regional Medical Practitioner (3 yrs on 457/482 in regional area · LIN 19/216)",
+      "High Income Earner (186 TRT ONLY [2 yrs ≥ FWHIT $190,100 on 457/482] & 494 [3 yrs ≥ FWHIT]; NOT applicable to 186 Direct Entry · LIN 19/216)",
+      "DAMA / Labour Agreement Age Concession (up to 50 or 55 under Labour Agreement stream, NOT standard 186 Direct Entry)"
     ]
   },
   "abf_enforcement_summary": {
