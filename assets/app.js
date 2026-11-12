@@ -665,8 +665,8 @@
           streamKo: "ENS 186 Direct Entry",
           streamEn: "ENS 186 Direct Entry",
           ageOk: false,
-          verdictKo: `❌ 만 ${age}세 · FWHIT($190,100) 고소득 면제 불가 — Not Age-Exempt via FWHIT (LIN 19/216 FWHIT age exemption applies to 186 TRT [2 yrs] & 494 [3 yrs], NOT 186 Direct Entry — check Academic / Scientific / NZ 444·461 streams or Labour Agreement)`,
-          verdictEn: `❌ Not Age-Exempt via FWHIT (LIN 19/216 FWHIT age exemption applies to 186 TRT [2 yrs] & 494 [3 yrs], NOT 186 Direct Entry — check Academic / Scientific / NZ 444·461 streams or Labour Agreement)`
+          verdictKo: `❌ 만 ${age}세 · FWHIT($190,100) 고소득 면제 불가 · Not Age-Exempt via FWHIT (LIN 19/216 FWHIT age exemption applies to 186 TRT [2 yrs] & 494 [3 yrs], NOT 186 Direct Entry · check Academic / Scientific / NZ 444·461 streams or Labour Agreement)`,
+          verdictEn: `❌ Not Age-Exempt via FWHIT (LIN 19/216 FWHIT age exemption applies to 186 TRT [2 yrs] & 494 [3 yrs], NOT 186 Direct Entry · check Academic / Scientific / NZ 444·461 streams or Labour Agreement)`
         };
       }
       if (ageEx === "dama_50_55") {
@@ -675,7 +675,7 @@
           streamKo: "ENS 186 Direct Entry",
           streamEn: "ENS 186 Direct Entry",
           ageOk: false,
-          verdictKo: `❌ 만 ${age}세 · 186 Direct Entry는 DAMA 연령 상한 특례(만 50·55세) 비적용 — DAMA 특례는 Labour Agreement(186 LA / 494 LA) 스트림 전용입니다`,
+          verdictKo: `❌ 만 ${age}세 · 186 Direct Entry는 DAMA 연령 상한 특례(만 50·55세) 비적용 · DAMA 특례는 Labour Agreement(186 LA / 494 LA) 스트림 전용입니다`,
           verdictEn: `❌ Not Age-Exempt under 186 Direct Entry via DAMA 50/55 (DAMA age 50/55 concessions apply only under the Labour Agreement stream [186 LA / 494 LA], NOT 186 Direct Entry)`
         };
       }
@@ -695,7 +695,7 @@
         streamEn: "ENS 186 Direct Entry",
         ageOk: false,
         verdictKo: `❌ 만 ${age}세 · 만 45세 상한 초과 (주의: 186 DE는 FWHIT 고소득 면제 불가 · 학계·정부과학·NZ 444/461·지방의사 또는 Labour Agreement 검토 필수)`,
-        verdictEn: `❌ Age ${age} · Exceeds under-45 cap (Note: FWHIT does NOT exempt 186 Direct Entry — check Academic / Scientific / NZ 444·461 or Labour Agreement)`
+        verdictEn: `❌ Age ${age} · Exceeds under-45 cap (Note: FWHIT does NOT exempt 186 Direct Entry · check Academic / Scientific / NZ 444·461 or Labour Agreement)`
       };
     }
 
@@ -706,7 +706,7 @@
           streamKo: "SESR Subclass 494",
           streamEn: "SESR Subclass 494",
           ageOk: true,
-          verdictKo: `✅ 만 ${age}세 · LIN 19/216 FWHIT($190,100) 면제 가능 — 단 494는 직전 3년 연속 FWHIT 이상 소득 입증 필수 (186 TRT는 2년 · 186 DE는 면제 불가)`,
+          verdictKo: `✅ 만 ${age}세 · LIN 19/216 FWHIT($190,100) 면제 가능 · 단 494는 직전 3년 연속 FWHIT 이상 소득 입증 필수 (186 TRT는 2년 · 186 DE는 면제 불가)`,
           verdictEn: `✅ Age ${age} · Exempt via LIN 19/216 FWHIT ($190,100), provided 3 years of FWHIT earnings are met for Subclass 494 (vs 2 years for 186 TRT; NOT available for 186 DE)`
         };
       }
@@ -745,8 +745,8 @@
         streamKo: "SESR Subclass 494",
         streamEn: "SESR Subclass 494",
         ageOk: false,
-        verdictKo: `❌ 만 ${age}세 · 일반 494 연령 상한(만 45세 미만) 초과 — FWHIT 3년 연속 고소득·학계·지방의사 또는 DAMA Labour Agreement(만 50·55세) 특례 검토 필요`,
-        verdictEn: `❌ Age ${age} · Exceeds standard under-45 cap for Subclass 494 — check FWHIT (3 yrs), Academic/Medical, or DAMA Labour Agreement (50/55) concessions`
+        verdictKo: `❌ 만 ${age}세 · 일반 494 연령 상한(만 45세 미만) 초과 · FWHIT 3년 연속 고소득·학계·지방의사 또는 DAMA Labour Agreement(만 50·55세) 특례 검토 필요`,
+        verdictEn: `❌ Age ${age} · Exceeds standard under-45 cap for Subclass 494 · check FWHIT (3 yrs), Academic/Medical, or DAMA Labour Agreement (50/55) concessions`
       };
     }
 
@@ -757,8 +757,8 @@
         streamKo: "ENS 186 TRT",
         streamEn: "ENS 186 TRT",
         ageOk: true,
-        verdictKo: `✅ 만 ${age}세 · LIN 19/216 FWHIT($190,100) 연령 면제 대상 — 186 TRT는 지명 스폰서 아래 457/482 소지자로 2년 연속 FWHIT 이상 보수 충족 시 면제 (참고: 494는 3년 필요 · 186 DE는 FWHIT 면제 불가)`,
-        verdictEn: `✅ Age ${age} · Eligible under LIN 19/216 FWHIT ($190,100) exemption — 186 TRT requires 2 years on 457/482 earning ≥ FWHIT with nominating sponsor (494 requires 3 yrs; NOT available for 186 DE)`
+        verdictKo: `✅ 만 ${age}세 · LIN 19/216 FWHIT($190,100) 연령 면제 대상 · 186 TRT는 지명 스폰서 아래 457/482 소지자로 2년 연속 FWHIT 이상 보수 충족 시 면제 (참고: 494는 3년 필요 · 186 DE는 FWHIT 면제 불가)`,
+        verdictEn: `✅ Age ${age} · Eligible under LIN 19/216 FWHIT ($190,100) exemption · 186 TRT requires 2 years on 457/482 earning ≥ FWHIT with nominating sponsor (494 requires 3 yrs; NOT available for 186 DE)`
       };
     }
     if (ageEx === "dama_50_55") {
@@ -796,8 +796,8 @@
       streamKo: "ENS 186 TRT",
       streamEn: "ENS 186 TRT",
       ageOk: false,
-      verdictKo: `❌ 만 ${age}세 · 일반 186 TRT 연령 상한(만 45세 미만) 초과 — FWHIT 2년 연속 고소득($190,100)·DAMA 연령 상한 특례(만 50·55세 · LA 스트림)·학계·지방의사 면제 요건을 반드시 검토하십시오.`,
-      verdictEn: `❌ Age ${age} · Exceeds standard under-45 cap for 186 TRT — check FWHIT (2 yrs), DAMA Labour Agreement (50/55), Academic, or Regional Medical exemptions.`
+      verdictKo: `❌ 만 ${age}세 · 일반 186 TRT 연령 상한(만 45세 미만) 초과 · FWHIT 2년 연속 고소득($190,100)·DAMA 연령 상한 특례(만 50·55세 · LA 스트림)·학계·지방의사 면제 요건을 반드시 검토하십시오.`,
+      verdictEn: `❌ Age ${age} · Exceeds standard under-45 cap for 186 TRT · check FWHIT (2 yrs), DAMA Labour Agreement (50/55), Academic, or Regional Medical exemptions.`
     };
   }
 
@@ -1103,7 +1103,7 @@
         "=== [Park & Co Lawyers | Migration Act 1958 ss 245AR / 245AS Lawful Cost Split Summary] ===",
         `• Stream & Turnover: ${vLabel} | ${turnLabel} | Applicants: ${res.totalApplicants} (1 Primary + ${res.adults} Adult + ${res.children} Child)`,
         "",
-        "[COLUMN A] MANDATORY EMPLOYER-ONLY COSTS (ss 245AR / 245AS & reg 2.87 — Unlawful to recover or deduct from worker)",
+        "[COLUMN A] MANDATORY EMPLOYER-ONLY COSTS (ss 245AR / 245AS & reg 2.87 · Unlawful to recover or deduct from worker)",
         `  1. Standard Business Sponsorship (SBS): ${fmtAUD(res.sbsFee)}`,
         `  2. Government Nomination Charge: ${fmtAUD(res.nomFee)}`,
         `  3. Skilling Australians Fund (SAF) Levy: ${fmtAUD(res.safLevy)}`,
@@ -1125,7 +1125,7 @@
       "=== [법무법인 박앤코 (Park & Co Lawyers) | Migration Act 1958 ss 245AR / 245AS 법정 비용 분담 명세서] ===",
       `• 대상 비자 및 기업 규모: ${vLabel} | ${turnLabel} | 총 신청 인원 ${res.totalApplicants}명 (주신청 1 + 성인 ${res.adults} + 자녀 ${res.children})`,
       "",
-      "[Column A] 고용주 전액 의무 부담 항목 (ss 245AR / 245AS · reg 2.87 — 근로자 전가·급여공제 불법)",
+      "[Column A] 고용주 전액 의무 부담 항목 (ss 245AR / 245AS · reg 2.87 · 근로자 전가·급여공제 불법)",
       `  1. 표준 비즈니스 스폰서십 (SBS): ${fmtAUD(res.sbsFee)}`,
       `  2. 정부 노미네이션 수수료 (Nomination): ${fmtAUD(res.nomFee)}`,
       `  3. 호주 기술기금 부담금 (SAF Levy): ${fmtAUD(res.safLevy)}`,
@@ -1567,8 +1567,8 @@
       statusAlertHtml = `
         <div class="alert-box alert-box--danger" style="margin-top:0.85rem;">
           <p style="margin:0 0 0.45rem;"><strong>🚨 ${en
-            ? `180-Day Mobility Grace Period Expired (${overdueDays}d Overdue as of ${res.todayIso}) — Visa Cancellation Risk, Seek Urgent Specialist Review`
-            : `180일 유예 기한 경과 (브리즈번 기준일 ${res.todayIso} 현재 ${overdueDays}일 초과) — 비자 취소 위험 · 즉시 전문가 점검 필요`}</strong></p>
+            ? `180-Day Mobility Grace Period Expired (${overdueDays}d Overdue as of ${res.todayIso}) · Visa Cancellation Risk, Seek Urgent Specialist Review`
+            : `180일 유예 기한 경과 (브리즈번 기준일 ${res.todayIso} 현재 ${overdueDays}일 초과) · 비자 취소 위험 · 즉시 전문가 점검 필요`}</strong></p>
           <p style="margin:0;font-size:0.88rem;">${en
             ? `Your Condition 8607/8608 grace window ended on <strong>${res.statutoryDate}</strong>. Exceeding 180 consecutive days (or 365 cumulative days) without a new sponsor nomination or substantive visa application triggers discretionary cancellation risk under <strong>s 116(1)(b)</strong>. Check immediate options via our <a href="https://changa9090.github.io/parkco-visa-crisis-navigator/?lang=en"><strong>Visa Crisis &amp; NOICC Navigator →</strong></a> or contact <strong>enquiry@parkcolawyers.com</strong>.`
             : `고용 종료일(<strong>${res.ceaseStr}</strong>) 기준 법정 유예 만료일(<strong>${res.statutoryDate}</strong>)이 이미 경과했습니다. 새 고용주 노미네이션 또는 대체 비자 접수 없이 유예 일수를 초과한 경우 <strong>Migration Act s 116(1)(b)</strong>에 따른 비자 취소 예고통지(NOICC) 발부 위험이 높으므로 즉시 <a href="https://changa9090.github.io/parkco-visa-crisis-navigator/"><strong>박앤코 비자 취소·NOICC 위기 네비게이터 →</strong></a>에서 대응 절차를 확인하시고 <strong>enquiry@parkcolawyers.com</strong>으로 긴급 점검을 요청하십시오.`}</p>
@@ -1632,8 +1632,8 @@
         <div class="pk-s245ar-split-grid">
           <div class="pk-s245ar-col pk-s245ar-col--employer">
             <h5>${en
-              ? "🏢 Column A — Mandatory Employer-Only Costs (s 245AR / s 245AS Ban)"
-              : "🏢 Column A — 고용주 전액 의무 부담 (s 245AR · 근로자 전가·공제 불법)"}</h5>
+              ? "🏢 Column A · Mandatory Employer-Only Costs (s 245AR / s 245AS Ban)"
+              : "🏢 Column A · 고용주 전액 의무 부담 (s 245AR · 근로자 전가·공제 불법)"}</h5>
             <ul>
               <li>${en ? "SBS Sponsorship Fee:" : "표준 비즈니스 스폰서십(SBS):"} <strong>${fmtAUD(res.sbsFee)}</strong></li>
               <li>${en ? "Nomination Charge:" : "노미네이션 수수료:"} <strong>${fmtAUD(res.nomFee)}</strong> ${res.nomFee === 0 ? (en ? "(Statutory Nil)" : "(법정 면제 $0)") : ""}</li>
@@ -1649,8 +1649,8 @@
 
           <div class="pk-s245ar-col pk-s245ar-col--applicant">
             <h5>${en
-              ? "👤 Column B — Visa Applicant-Payable Costs (Worker or Employer by Agreement)"
-              : "👤 Column B — 비자 신청자 부담 가능 항목 (근로자 또는 노사 합의 부담)"}</h5>
+              ? "👤 Column B · Visa Applicant-Payable Costs (Worker or Employer by Agreement)"
+              : "👤 Column B · 비자 신청자 부담 가능 항목 (근로자 또는 노사 합의 부담)"}</h5>
             <ul>
               <li>${en ? "Base + Dependent VAC:" : "주신청 + 동반가족 VAC:"} <strong>${fmtAUD(res.vacSubtotal)}</strong> (${fmtAUD(res.baseVac)} + ${fmtAUD(res.addAdultVac)} + ${fmtAUD(res.addChildVac)})</li>
               <li>${en ? "STAC (reg 2.12C(5)):" : "임시비자 연속신청(STAC):"} ${stacLine}</li>
