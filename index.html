@@ -102,6 +102,7 @@
         <a href="#condition-8607-clock" data-i18n="nav8607">8607 퇴사시계</a>
         <a href="#saf-cost-calculator" data-i18n="navSaf">SAF·노미네이션비용</a>
         <a href="#abf-sanctions-explorer" data-i18n="navAbf">ABF 제재조회</a>
+        <a href="#work-knowledge-hub" data-i18n="navHub">60문항 지식허브</a>
         <a class="parkco-svc-link" href="https://faq.immispecialist.com/?lang=ko" data-ko-href="https://faq.immispecialist.com/?lang=ko" data-en-href="https://faq.immispecialist.com/?lang=en" target="_blank" rel="noopener" data-i18n="navFaq">이민 FAQ</a>
       </nav>
 
@@ -547,6 +548,60 @@
             </div>
           </div>
         </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOL 6: 5-TAB WORK VISA KNOWLEDGE HUB (W01-W60, 6 2026 CASES, OFFICIAL STATS, 14 CURRENTNESS RULES, 4 CHECKLISTS) -->
+  <section class="band-ivory" id="work-knowledge-hub" data-role-panel="worker employer">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="overline-serif light-mode">TOOL 06 · 5-TAB EMPLOYER-SPONSORED &amp; WORK VISA KNOWLEDGE HUB (2026-11-12 VERIFIED)</span>
+          <h2 data-i18n="wkhTitle">고용주 스폰서십 · 취업 비자(482 SID · 186 ENS · 494 · 407) 60문항 지식허브 · 2026 판례 6선 · 공식 통계 · 통념 대조표</h2>
+          <p data-i18n="wkhDesc">2026-11-12 기준 1차 연방 법령(Migration Act 1958 · Migration Regulations 1994 · LIN 26/022 · LIN 24/089 · LIN 24/093 · F2026L00874 · F2026L01449), 2026년 연방법원·행정재심기구(ART) 판례 6선, 이민성 BP0014 공식 통계(2025–26 승인 140,824건 · 2026-09-30 체류 268,293명 · 영주권 44,022명)를 통합한 심층 지식 베이스입니다.</p>
+        </div>
+      </div>
+
+      <div class="card" style="background:#FFFFFF;border-top:4px solid #7A1F2B;">
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div style="display:flex;flex-wrap:wrap;gap:6px;" role="tablist" aria-label="Work Visa Knowledge Hub Tabs" data-i18n-aria="ariaWkhTabs">
+            <button type="button" class="btn-secondary wkh-tab-btn active" data-wkh-tab="faqs" data-i18n="wkhTabFaqs">60문항 핵심 Q&amp;A (W01~W60)</button>
+            <button type="button" class="btn-secondary wkh-tab-btn" data-wkh-tab="cases" data-i18n="wkhTabCases">2026 최신 판례 · ART 결정 6선</button>
+            <button type="button" class="btn-secondary wkh-tab-btn" data-wkh-tab="stats" data-i18n="wkhTabStats">공식 통계 · 처리기간 · VAC · SAF 팩트체크</button>
+            <button type="button" class="btn-secondary wkh-tab-btn" data-wkh-tab="currentness" data-i18n="wkhTabCurrentness">과거 영상·통념 vs 현행 법령 대조 (R01~R14)</button>
+            <button type="button" class="btn-secondary wkh-tab-btn" data-wkh-tab="checklists" data-i18n="wkhTabChecklists">단계별 실무 점검 체크리스트 (WCL01~WCL04)</button>
+          </div>
+          <a class="btn-burgundy parkco-svc-link" href="https://faq.immispecialist.com/category/employer-sponsored?lang=ko" data-ko-href="https://faq.immispecialist.com/category/employer-sponsored?lang=ko" data-en-href="https://faq.immispecialist.com/category/employer-sponsored?lang=en" target="_blank" rel="noopener" style="font-size:12.5px;padding:7px 13px;" data-i18n="wkhBtnOpenPortal">공식 FAQ 포털(71문항) 전체 보기 &nearr;</a>
+        </div>
+
+        <div id="wkh-panel-faqs" class="wkh-panel">
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <div id="wkh-role-bar" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+            <div style="flex:1;min-width:240px;max-width:400px;">
+              <input type="search" id="wkh-faq-search" class="form-control" placeholder="60문항 검색 (예: 482, 186, 494, 407, CSIT, SSIT, AMSR, LMT, SAF, 8607, 180일, s 48, RPL)..." />
+            </div>
+          </div>
+          <div id="wkh-faq-cat-bar" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;"></div>
+          <div id="wkh-faq-count" style="font-size:12.5px;color:#47433E;margin-bottom:10px;"></div>
+          <div id="wkh-faq-list" style="display:grid;grid-template-columns:1fr;gap:10px;"></div>
+        </div>
+
+        <div id="wkh-panel-cases" class="wkh-panel" hidden>
+          <div id="wkh-cases-content"></div>
+        </div>
+
+        <div id="wkh-panel-stats" class="wkh-panel" hidden>
+          <div id="wkh-stats-content"></div>
+        </div>
+
+        <div id="wkh-panel-currentness" class="wkh-panel" hidden>
+          <div id="wkh-currentness-content"></div>
+        </div>
+
+        <div id="wkh-panel-checklists" class="wkh-panel" hidden>
+          <div id="wkh-checklists-content"></div>
+        </div>
       </div>
     </div>
   </section>

@@ -243,6 +243,7 @@
       nav8607: "8607 Clock",
       navSaf: "SAF & Nom Fees",
       navAbf: "ABF Sanctions",
+      navHub: "60-Q Knowledge Hub",
       navFaq: "Immi FAQ",
       pollBtnLabel: "14/14 Verified",
       topCta: "Official Inquiry Hub",
@@ -437,7 +438,15 @@
       footerLinkDama: "🌏 DAMA 13-Region Navigator (2,474 Occupations)",
       footerLinkCrisis: "🚨 Visa Refusal & Cancellation Crisis Navigator",
       footerLinkFaq: "📚 Australia Immigration Practical FAQ",
-      modalPollerTitle: "Primary Legislation Source Monitor (Live Verified)"
+      modalPollerTitle: "Primary Legislation Source Monitor (Live Verified)",
+      wkhTitle: "Employer-Sponsored & Work Visa (482 SID · 186 ENS · 494 · 407) 60-Question Hub · 6 2026 Cases · Official Stats & Currentness Matrix",
+      wkhDesc: "Comprehensive knowledge base verified as at 2026-11-12 against primary federal legislation (Migration Act 1958 · Migration Regulations 1994 · LIN 26/022 · LIN 24/089 · LIN 24/093 · F2026L00874 · F2026L01449), 6 2026 FCA/FCFCOA/ART decisions, and official Home Affairs BP0014 statistics (140,824 grants in 2025–26 · 268,293 holders at 2026-09-30 · 44,022 permanent Employer Sponsored outcomes).",
+      wkhTabFaqs: "60 Core Q&A (W01–W60)",
+      wkhTabCases: "6 2026 Court & ART Decisions",
+      wkhTabStats: "Official Stats · Timeframes · VAC · SAF",
+      wkhTabCurrentness: "Legacy Video vs Current Law (R01–R14)",
+      wkhTabChecklists: "Stage Checklists (WCL01–WCL04)",
+      wkhBtnOpenPortal: "View All 71 Guides on FAQ Portal ↗"
     }
   };
 
@@ -490,7 +499,8 @@
     en: {
       ariaBrandHub: "Park & Co Lawyers Unified Hub",
       ariaQuickNav: "Core Calculators Quick Navigation",
-      ariaRoleTabs: "Switch Tools by User Role"
+      ariaRoleTabs: "Switch Tools by User Role",
+      ariaWkhTabs: "Work Visa Knowledge Hub Tabs"
     }
   };
 
@@ -1984,6 +1994,292 @@
     }
   }
 
+  /* 6B. Render 5-Tab Work Visa Knowledge Hub */
+  let cachedWorkKnowledgeHub = null;
+  let currentWkhTab = "faqs";
+  let currentWkhRole = "ALL";
+  let currentWkhCategory = "ALL";
+  let currentWkhQuery = "";
+
+  function renderWorkKnowledgeHub() {
+    if (typeof document === "undefined") return;
+    const rootBox = document.getElementById("work-knowledge-hub");
+    if (!rootBox || !cachedWorkKnowledgeHub) return;
+
+    const isEn = STATE.lang === "en";
+    const data = cachedWorkKnowledgeHub;
+    const faqs = Array.isArray(data.faq_items) ? data.faq_items : [];
+    const casesList = Array.isArray(data.review_and_cases) ? data.review_and_cases : [];
+    const rulesList = Array.isArray(data.currentness_rules) ? data.currentness_rules : [];
+    const checkList = Array.isArray(data.stage_checklists) ? data.stage_checklists : [];
+    const stats = data.statistics_summary || {};
+
+    const searchInput = document.getElementById("wkh-faq-search");
+    if (searchInput) {
+      searchInput.placeholder = isEn
+        ? "Search 60 Q&As (e.g. 482, 186, 494, 407, CSIT, SSIT, AMSR, LMT, SAF, 8607, 180 days, s 48, RPL)..."
+        : "60문항 검색 (예: 482, 186, 494, 407, CSIT, SSIT, AMSR, LMT, SAF, 8607, 180일, s 48, RPL)...";
+    }
+
+    document.querySelectorAll(".wkh-tab-btn").forEach((btn) => {
+      btn.classList.toggle("active", btn.getAttribute("data-wkh-tab") === currentWkhTab);
+    });
+    ["faqs", "cases", "stats", "currentness", "checklists"].forEach((t) => {
+      const pan = document.getElementById("wkh-panel-" + t);
+      if (pan) pan.hidden = currentWkhTab !== t;
+    });
+
+    /* Tab 1: 60 Core Q&A (W01-W60) */
+    const roleBar = document.getElementById("wkh-role-bar");
+    const catBar = document.getElementById("wkh-faq-cat-bar");
+    const faqList = document.getElementById("wkh-faq-list");
+    const countEl = document.getElementById("wkh-faq-count");
+
+    if (roleBar && catBar && faqList) {
+      const roleCounts = { ALL: faqs.length, worker: 0, employer: 0 };
+      faqs.forEach((f) => {
+        if (f.role === "worker") roleCounts.worker += 1;
+        else if (f.role === "employer") roleCounts.employer += 1;
+      });
+      const roles = [
+        { code: "ALL", ko: `전체 역할 (${roleCounts.ALL})`, en: `All Roles (${roleCounts.ALL})` },
+        { code: "worker", ko: `근로자 · 신청인 (${roleCounts.worker})`, en: `Worker / Visa Applicant (${roleCounts.worker})` },
+        { code: "employer", ko: `고용주 · HR · 스폰서 (${roleCounts.employer})`, en: `Employer / HR / Sponsor (${roleCounts.employer})` }
+      ];
+      roleBar.innerHTML = roles.map((r) => `
+        <button type="button" class="btn-secondary js-wkh-role-chip ${currentWkhRole === r.code ? "active" : ""}" data-role="${escapeHtml(r.code)}" style="font-size:12px;padding:5px 10px;">
+          ${escapeHtml(isEn ? r.en : r.ko)}
+        </button>
+      `).join("");
+
+      const catMap = {};
+      faqs.forEach((f) => {
+        if (currentWkhRole !== "ALL" && f.role !== currentWkhRole) return;
+        const c = f.category || "CAT";
+        if (!catMap[c]) {
+          catMap[c] = {
+            code: c,
+            ko: f.category_label_ko || c,
+            en: f.category_label_en || c,
+            count: 0
+          };
+        }
+        catMap[c].count += 1;
+      });
+      const cats = Object.keys(catMap);
+      const roleFilteredTotal = faqs.filter((f) => currentWkhRole === "ALL" || f.role === currentWkhRole).length;
+      let catHtml = `<button type="button" class="btn-secondary js-wkh-cat-chip ${currentWkhCategory === "ALL" ? "active" : ""}" data-cat="ALL" style="font-size:11.5px;padding:4px 9px;">${escapeHtml(isEn ? `All Categories (${roleFilteredTotal})` : `전체 분류 (${roleFilteredTotal})`)}</button>`;
+      cats.forEach((c) => {
+        const info = catMap[c];
+        catHtml += `<button type="button" class="btn-secondary js-wkh-cat-chip ${currentWkhCategory === c ? "active" : ""}" data-cat="${escapeHtml(c)}" style="font-size:11.5px;padding:4px 9px;">${escapeHtml((isEn ? info.en : info.ko) + " (" + info.count + ")")}</button>`;
+      });
+      catBar.innerHTML = catHtml;
+
+      const qLower = String(currentWkhQuery || "").trim().toLowerCase();
+      const filtered = faqs.filter((f) => {
+        if (currentWkhRole !== "ALL" && f.role !== currentWkhRole) return false;
+        if (currentWkhCategory !== "ALL" && f.category !== currentWkhCategory) return false;
+        if (!qLower) return true;
+        const hay = [
+          f.id, f.slug, f.category_label_ko, f.category_label_en,
+          f.question_ko, f.question_en, f.summary_ko, f.summary_en,
+          f.review_reason_ko, f.review_reason_en, f.source_notes, f.source_notes_en
+        ].join(" ").toLowerCase();
+        return hay.includes(qLower);
+      });
+
+      if (countEl) {
+        countEl.textContent = isEn
+          ? `Showing ${filtered.length} of ${faqs.length} verified Work Visa Q&A items (primary legislation, 2026 case law & BP0014 stats verified as at 2026-11-12)`
+          : `검색 결과: 총 ${filtered.length}개 문항 / 전체 ${faqs.length}개 (2026-11-12 기준 1차 법령 · 판례 · BP0014 공식 통계 검증 완료)`;
+      }
+
+      const hashTarget = (typeof window !== "undefined" && window.location && window.location.hash)
+        ? window.location.hash.replace(/^#/, "").toUpperCase()
+        : "";
+
+      faqList.innerHTML = filtered.map((f, idx) => {
+        const q = isEn ? f.question_en : f.question_ko;
+        const sum = isEn ? f.summary_en : f.summary_ko;
+        const rev = isEn ? f.review_reason_en : f.review_reason_ko;
+        const src = isEn ? (f.source_notes_en || f.source_notes || "") : (f.source_notes || "");
+        const catLbl = isEn ? f.category_label_en : f.category_label_ko;
+        const roleBadge = f.role === "employer"
+          ? (isEn ? "Employer / HR" : "고용주 · HR")
+          : (isEn ? "Worker / Applicant" : "근로자 · 신청인");
+        const portalUrl = isEn
+          ? (f.faq_url_en || `https://faq.immispecialist.com/q/${encodeURIComponent(f.slug)}?lang=en`)
+          : (f.faq_url_ko || `https://faq.immispecialist.com/q/${encodeURIComponent(f.slug)}?lang=ko`);
+        const isOpen = idx < 3 || hashTarget === f.id || hashTarget === String(f.slug || "").toUpperCase();
+        return `
+          <details class="pk-disclosure" id="${escapeHtml(f.id)}" ${isOpen ? "open" : ""} style="margin-top:0;">
+            <summary style="font-size:13.5px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+              <span><strong>[${escapeHtml(f.id)}]</strong> ${escapeHtml(q)}</span>
+              <span style="display:inline-flex;gap:6px;flex-wrap:wrap;">
+                <span class="badge badge-burgundy" style="font-size:11px;">${escapeHtml(roleBadge)}</span>
+                <span class="badge-ok" style="font-size:11px;">${escapeHtml(catLbl)}</span>
+              </span>
+            </summary>
+            <div class="pk-disclosure__body" style="font-size:13px;line-height:1.62;">
+              <div class="alert-box alert-box--ok" style="margin-bottom:8px;">
+                <strong>${escapeHtml(isEn ? "Statutory Rule & Conclusion: " : "핵심 법령 결론: ")}</strong>${escapeHtml(sum)}
+              </div>
+              <p style="margin:0 0 8px 0;">
+                <strong>${escapeHtml(isEn ? "When Individual Legal Review Is Needed: " : "박앤코 개별 법률 검토 포인트: ")}</strong>${escapeHtml(rev)}
+              </p>
+              <p style="margin:0 0 10px 0;font-size:12px;color:#47433E;">
+                <strong>${escapeHtml(isEn ? "Primary Authorities (Verified 2026-11-12): " : "1차 법령·판례 근거 (검증일 2026-11-12): ")}</strong>${escapeHtml(src)}
+              </p>
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                <span class="badge badge-burgundy" style="font-size:11px;">${escapeHtml(isEn ? `Fact-Checked: ${f.fact_checked_on || "2026-11-12"}` : `검증 기준일: ${f.fact_checked_on || "2026-11-12"}`)}</span>
+                <a href="${escapeHtml(portalUrl)}" target="_blank" rel="noopener" style="font-size:12.5px;font-weight:800;color:#0E3A3E;">
+                  ${escapeHtml(isEn ? "Read Full Legal Guide on FAQ Portal ↗" : "공식 FAQ 포털에서 전문 및 체크리스트 보기 ↗")}
+                </a>
+              </div>
+            </div>
+          </details>
+        `;
+      }).join("");
+    }
+
+    /* Tab 2: 6 2026 Court & ART Decisions */
+    const casesBox = document.getElementById("wkh-cases-content");
+    if (casesBox) {
+      casesBox.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:12px;">` + casesList.map((c) => `
+        <div class="card" style="padding:14px 16px;border-left:4px solid #0E3A3E;background:#FBF9F5;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
+            <strong style="font-size:13.8px;color:#0E3A3E;">${escapeHtml(c.case_name)}</strong>
+            <span class="badge badge-burgundy" style="font-size:11px;">${escapeHtml(c.date || "2026")}</span>
+          </div>
+          <div style="font-size:12px;font-weight:700;color:#7A1F2B;margin-bottom:6px;">${escapeHtml(isEn ? c.topic_en : c.topic_ko)}</div>
+          <p style="margin:0 0 8px 0;font-size:12.8px;line-height:1.58;color:#14282A;">${escapeHtml(isEn ? c.holding_en : c.holding_ko)}</p>
+          <div style="font-size:12px;color:#47433E;background:#FFFFFF;border:1px solid #E5DFD3;border-radius:6px;padding:8px 10px;margin-bottom:8px;">
+            <strong>${escapeHtml(isEn ? "Scope & Caution: " : "적용 범위 및 한계: ")}</strong>${escapeHtml(isEn ? c.limit_en : c.limit_ko)}
+          </div>
+          <a href="${escapeHtml(c.primary_url || "https://www.austlii.edu.au/")}" target="_blank" rel="noopener" style="font-size:12px;font-weight:700;color:#0E3A3E;">
+            ${escapeHtml(isEn ? "Verify Full Judgment on AustLII ↗" : "AustLII 원문 판결문 확인 ↗")}
+          </a>
+        </div>
+      `).join("") + `</div>`;
+    }
+
+    /* Tab 3: Official Stats, Processing Times, VAC & SAF */
+    const statsBox = document.getElementById("wkh-stats-content");
+    if (statsBox) {
+      const g2425 = (stats.grants_2024_25 && stats.grants_2024_25.total) || 130571;
+      const g2526 = (stats.grants_2025_26 && stats.grants_2025_26.total) || 140824;
+      const g2627q1 = (stats.grants_2026_27_q1 && stats.grants_2026_27_q1.total) || 30500;
+      const h2609 = (stats.holders_2026_09_30 && stats.holders_2026_09_30.total) || 268293;
+      const prOut = (stats.permanent_employer_sponsored_2025_26 && stats.permanent_employer_sponsored_2025_26.outcome) || 44022;
+      const artRows = Array.isArray(stats.art_processing_times_apr_sep_2026) ? stats.art_processing_times_apr_sep_2026 : [];
+      const vacRows = Array.isArray(stats.vac_schedule1_2026_11_12) ? stats.vac_schedule1_2026_11_12 : [];
+
+      statsBox.innerHTML = `
+        <div class="stat-band" style="border-radius:10px;margin-bottom:16px;">
+          <div class="stat-row">
+            <div class="stat-cell">
+              <div class="s-over">${escapeHtml(isEn ? "482 GRANTS (2025–26)" : "482 비자 승인 (2025–26)")}</div>
+              <div class="s-num">${Number(g2526).toLocaleString("en-AU")}</div>
+              <div class="s-sub">${escapeHtml(isEn ? `vs ${Number(g2425).toLocaleString("en-AU")} in 2024–25 (BP0014)` : `2024–25년 ${Number(g2425).toLocaleString("en-AU")}건 대비 증가`)}</div>
+            </div>
+            <div class="stat-cell">
+              <div class="s-over">${escapeHtml(isEn ? "482 GRANTS (2026–27 Q1)" : "482 승인 (2026–27 1분기)")}</div>
+              <div class="s-num">${Number(g2627q1).toLocaleString("en-AU")}</div>
+              <div class="s-sub">${escapeHtml(isEn ? "To 30 Sep 2026 (Primary 15,863)" : "2026.09.30 기준 (주신청자 15,863명)")}</div>
+            </div>
+            <div class="stat-cell">
+              <div class="s-over">${escapeHtml(isEn ? "482 ONSHORE HOLDERS" : "호주 내 482 체류 소지자")}</div>
+              <div class="s-num">${Number(h2609).toLocaleString("en-AU")}</div>
+              <div class="s-sub">${escapeHtml(isEn ? "As at 30 Sep 2026 (Stock != Grants)" : "2026.09.30 기준 (승인 건수와 구별 필수)")}</div>
+            </div>
+            <div class="stat-cell">
+              <div class="s-over">${escapeHtml(isEn ? "PERMANENT ENS/RSMS OUTCOME" : "고용주 스폰서 영주권 실적")}</div>
+              <div class="s-num">${Number(prOut).toLocaleString("en-AU")}</div>
+              <div class="s-sub">${escapeHtml(isEn ? "2025–26 Outcome (Planning 44,000)" : "2025–26년 실적 (계획치 44,000명)")}</div>
+            </div>
+          </div>
+        </div>
+        <div class="table-wrap" style="margin-bottom:14px;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>${escapeHtml(isEn ? "ART Review Cohort (1 Apr – 30 Sep 2026)" : "행정재심기구(ART) 재심 분야 (2026.04.01 ~ 09.30)")}</th>
+                <th>${escapeHtml(isEn ? "50% Finalised (Median)" : "50% 처리 완료 (중앙값)")}</th>
+                <th>${escapeHtml(isEn ? "95% Finalised" : "95% 처리 완료")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${artRows.map((r) => `
+                <tr>
+                  <td><strong>${escapeHtml(isEn ? r.category_en : r.category_ko)}</strong></td>
+                  <td><strong>${escapeHtml(isEn ? `${r.p50_months} months` : `${r.p50_months}개월`)}</strong></td>
+                  <td>${escapeHtml(isEn ? `${r.p95_months} months` : `${r.p95_months}개월`)}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>${escapeHtml(isEn ? "Visa Subclass (Schedule 1 as at 2026-11-12)" : "비자 구분 (2026-11-12 Schedule 1 기준)")}</th>
+                <th>${escapeHtml(isEn ? "Primary Applicant VAC" : "주신청자 기본 VAC")}</th>
+                <th>${escapeHtml(isEn ? "Secondary 18+ VAC" : "성인 동반자(18세+) VAC")}</th>
+                <th>${escapeHtml(isEn ? "Secondary <18 VAC" : "미성년 동반자(18세 미만) VAC")}</th>
+                <th>${escapeHtml(isEn ? "2nd Instalment / STAC Note" : "2차 납부금 · STAC 비고")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${vacRows.map((v) => `
+                <tr>
+                  <td><strong>${escapeHtml(v.subclass)}</strong></td>
+                  <td><strong>$${Number(v.primary).toLocaleString("en-AU")}</strong></td>
+                  <td>$${Number(v.secondary_18_plus).toLocaleString("en-AU")}</td>
+                  <td>$${Number(v.secondary_under_18).toLocaleString("en-AU")}</td>
+                  <td>${escapeHtml(isEn ? v.second_instalment_note_en : v.second_instalment_note_ko)}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    /* Tab 4: 14 Legacy Video vs Current Law Rules (R01-R14) */
+    const curBox = document.getElementById("wkh-currentness-content");
+    if (curBox) {
+      curBox.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:10px;">` + rulesList.map((r) => `
+        <div class="alert-box alert-box--warn" style="margin:0;">
+          <div style="font-weight:800;font-size:13px;color:#7A1F2B;margin-bottom:4px;">
+            [${escapeHtml(r.id)} · ${escapeHtml(isEn ? "Legacy Claim / Myth" : "과거 영상·통념")}] ${escapeHtml(isEn ? r.legacy_claim_en : r.legacy_claim_ko)}
+          </div>
+          <div style="font-size:12.8px;line-height:1.58;color:#14282A;">
+            <strong>${escapeHtml(isEn ? "2026-11-12 Statutory Rule: " : "2026-11-12 현행 법령 기준: ")}</strong>${escapeHtml(isEn ? r.current_rule_en : r.current_rule_ko)}
+          </div>
+        </div>
+      `).join("") + `</div>`;
+    }
+
+    /* Tab 5: 4 Stage Checklists (WCL01-WCL04) */
+    const clBox = document.getElementById("wkh-checklists-content");
+    if (clBox) {
+      clBox.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;">` + checkList.map((cl) => {
+        const items = isEn ? (cl.items_en || []) : (cl.items_ko || []);
+        return `
+          <div class="alert-box alert-box--ok" style="margin:0;">
+            <div style="font-weight:800;font-size:13.8px;color:#0E3A3E;margin-bottom:6px;">
+              [${escapeHtml(cl.stage_id)}] ${escapeHtml(isEn ? cl.title_en : cl.title_ko)}
+            </div>
+            <ul style="margin:0;padding-left:18px;font-size:12.8px;line-height:1.58;color:#14282A;">
+              ${items.map((it) => `<li>${escapeHtml(it)}</li>`).join("")}
+            </ul>
+          </div>
+        `;
+      }).join("") + `</div>`;
+    }
+  }
+
   /* 7. Render Poller Table & Modal */
   function renderPollerTable(sources) {
     if (typeof document === "undefined") return;
@@ -2129,6 +2425,7 @@
     updateCondition8607();
     updateSafCalculator();
     renderAbfSanctionsExplorer();
+    renderWorkKnowledgeHub();
     if (STATE.sources.length) renderPollerTable(STATE.sources);
   }
 
@@ -2245,7 +2542,31 @@
       if (demoBtn) {
         activateDemoData();
       }
+      const wkhTabBtn = ev.target && ev.target.closest ? ev.target.closest(".wkh-tab-btn") : null;
+      if (wkhTabBtn) {
+        currentWkhTab = wkhTabBtn.getAttribute("data-wkh-tab") || "faqs";
+        renderWorkKnowledgeHub();
+      }
+      const wkhRoleChip = ev.target && ev.target.closest ? ev.target.closest(".js-wkh-role-chip") : null;
+      if (wkhRoleChip) {
+        currentWkhRole = wkhRoleChip.getAttribute("data-role") || "ALL";
+        currentWkhCategory = "ALL";
+        renderWorkKnowledgeHub();
+      }
+      const wkhCatChip = ev.target && ev.target.closest ? ev.target.closest(".js-wkh-cat-chip") : null;
+      if (wkhCatChip) {
+        currentWkhCategory = wkhCatChip.getAttribute("data-cat") || "ALL";
+        renderWorkKnowledgeHub();
+      }
     });
+
+    const wkhSearchInput = document.getElementById("wkh-faq-search");
+    if (wkhSearchInput) {
+      wkhSearchInput.addEventListener("input", function () {
+        currentWkhQuery = this.value || "";
+        renderWorkKnowledgeHub();
+      });
+    }
 
     ["sm-major-group", "sm-lodgement-period", "sm-offered-salary", "sm-amsr", "sm-au-worker", "sm-award-applies", "sm-dama-region"].forEach((id) => {
       document.getElementById(id)?.addEventListener("input", markInteractedAndRun(updateStreamChecker));
@@ -2341,6 +2662,15 @@
             if (aData && aData.total_sanctions) {
               STATE.abf = aData;
               renderAbfSanctionsExplorer();
+            }
+          })
+          .catch(() => {});
+        fetch("data/work_knowledge_hub.json")
+          .then((r) => r.json())
+          .then((wData) => {
+            if (wData && Array.isArray(wData.faq_items)) {
+              cachedWorkKnowledgeHub = wData;
+              renderWorkKnowledgeHub();
             }
           })
           .catch(() => {});
