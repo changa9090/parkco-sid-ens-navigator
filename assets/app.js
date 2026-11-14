@@ -160,12 +160,86 @@
   };
 
   const PERIOD_THRESHOLDS = {
-    "fy26_27": { label: "FY2026–27", csit: 79423, ssit: 146576, dama90: 71481, fwhit: 190100 },
-    "fy25_26": { label: "FY2025–26", csit: 76515, ssit: 141210, dama90: 68864, fwhit: 183100 },
-    "fy24_25_sid": { label: "FY2024–25 (SID)", csit: 73150, ssit: 135000, dama90: 65835, fwhit: 175000 },
-    "fy23_24": { label: "FY2023–24", csit: 70000, ssit: 999999, dama90: 63000, fwhit: 167500 },
-    "2013_2023": { label: "2013–Jun 2023", csit: 53900, ssit: 999999, dama90: 48510, fwhit: 162000 }
+    "fy26_27": {
+      label: "FY2026–27",
+      labelKo: "FY2026–27 현행 (2026.07.01~2027.06.30)",
+      labelEn: "FY2026–27 Current (1 Jul 2026–30 Jun 2027)",
+      csit: 79423,
+      ssit: 146576,
+      dama90: 71481,
+      fwhit: 190100,
+      isPreSid: false,
+      instrument: "LIN 26/050 (F2026L00874)"
+    },
+    "fy25_26": {
+      label: "FY2025–26",
+      labelKo: "FY2025–26 (2025.07.01~2026.06.30)",
+      labelEn: "FY2025–26 (1 Jul 2025–30 Jun 2026)",
+      csit: 76515,
+      ssit: 141210,
+      dama90: 68864,
+      fwhit: 183100,
+      isPreSid: false,
+      instrument: "LIN 25/038 (F2025L00731)"
+    },
+    "fy24_25_sid": {
+      label: "FY2024–25 (SID)",
+      labelKo: "FY2024–25 SID 출범 후 (2024.12.07~2025.06.30)",
+      labelEn: "FY2024–25 SID Era (7 Dec 2024–30 Jun 2025)",
+      csit: 73150,
+      ssit: 135000,
+      dama90: 65835,
+      fwhit: 175000,
+      isPreSid: false,
+      instrument: "F2024L01621 (SID Subclass 482 Launch)"
+    },
+    "fy24_25_tss": {
+      label: "FY2024–25 (Pre-SID TSS)",
+      labelKo: "FY2024–25 구 TSS 482 구간 (2024.07.01~2024.12.06)",
+      labelEn: "FY2024–25 Pre-SID TSS 482 Era (1 Jul 2024–6 Dec 2024)",
+      csit: 73150,
+      ssit: null,
+      dama90: 65835,
+      fwhit: 175000,
+      isPreSid: true,
+      instrument: "LIN 24/052 (F2024L00833 · s 11)"
+    },
+    "fy23_24": {
+      label: "FY2023–24 (Pre-SID TSS)",
+      labelKo: "FY2023–24 구 TSS 482 구간 (2023.07.01~2024.06.30)",
+      labelEn: "FY2023–24 Pre-SID TSS 482 Era (1 Jul 2023–30 Jun 2024)",
+      csit: 70000,
+      ssit: null,
+      dama90: 63000,
+      fwhit: 167500,
+      isPreSid: true,
+      instrument: "LIN 23/045 (F2023L00921 · s 10)"
+    },
+    "2013_2023": {
+      label: "2013–30 Jun 2023 (Legacy 457/TSS)",
+      labelKo: "2013~2023.06.30 구 457·TSS 동결기",
+      labelEn: "2013–30 Jun 2023 Legacy 457/TSS Frozen Era",
+      csit: 53900,
+      ssit: null,
+      dama90: 48510,
+      fwhit: 162000,
+      isPreSid: true,
+      instrument: "IMMI 18/033 (Frozen TSMIT)"
+    }
   };
+
+  function resolvePeriodKeyFromDate(isoStr) {
+    if (!isoStr || typeof isoStr !== "string") return null;
+    const d = ParkCoDates.parseIsoLocal(isoStr.trim());
+    if (!d) return null;
+    const norm = ParkCoDates.formatIsoLocal(d);
+    if (norm <= "2023-06-30") return "2013_2023";
+    if (norm <= "2024-06-30") return "fy23_24";
+    if (norm <= "2024-12-06") return "fy24_25_tss";
+    if (norm <= "2025-06-30") return "fy24_25_sid";
+    if (norm <= "2026-06-30") return "fy25_26";
+    return "fy26_27";
+  }
 
   const AGE_EX_LABELS = {
     none: { ko: "해당 없음 (일반 만 45세 미만 기준)", en: "None (Standard Under-45 Rule)" },
@@ -245,7 +319,7 @@
       navAbf: "ABF Sanctions",
       navHub: "60-Q Knowledge Hub",
       navFaq: "Immi FAQ",
-      pollBtnLabel: "14/14 Verified",
+      pollBtnLabel: "14/14 Hash Sync",
       topCta: "Official Inquiry Hub",
       urgentBadge: "FY2026–27 Primary Legislation",
       urgentText: "CSIT $79,423 · SSIT $146,576 · DAMA 90% $71,481 · 494 Nomination $0 (reg 2.73B) · Condition 8607 180d/365d Mobility",
@@ -268,9 +342,12 @@
       sm_period_label: "1-B. Nomination Lodgement Period (Applicable Floor)",
       optPer2627: "FY2026–27 (Current from 1 Jul 2026 · CSIT $79,423 · SSIT $146,576 · DAMA $71,481)",
       optPer2526: "FY2025–26 (1 Jul 2025–30 Jun 2026 · CSIT $76,515 · SSIT $141,210 · DAMA $68,864)",
-      optPer2425: "FY2024–25 (7 Dec 2024–30 Jun 2025 SID Launch · CSIT $73,150 · SSIT $135,000)",
-      optPer2324: "FY2023–24 (1 Jul 2023–6 Dec 2024 · Legacy TSMIT $70,000)",
-      optPer1323: "2013 – 30 Jun 2023 (Legacy Frozen TSMIT $53,900)",
+      optPer2425: "FY2024–25 SID Era (7 Dec 2024–30 Jun 2025 SID Launch · CSIT $73,150 · SSIT $135,000)",
+      optPer2425Tss: "FY2024–25 Pre-SID TSS Era (1 Jul 2024–6 Dec 2024 · LIN 24/052 TSMIT $73,150)",
+      optPer2324: "FY2023–24 Pre-SID TSS Era (1 Jul 2023–30 Jun 2024 · LIN 23/045 TSMIT $70,000)",
+      optPer1323: "2013 – 30 Jun 2023 (Legacy 457/TSS Frozen TSMIT $53,900)",
+      sm_period_date_label: "Optional: Exact Nomination Lodgement Date (Auto-Matches Period)",
+      sm_period_date_hint: "Entering a date (e.g. 2024-06-30, 2024-07-01, 2024-12-06, 2024-12-07) automatically selects the in-force statutory regime.",
       sm_sal_label: "2. Offered Guaranteed Annual Earnings (GAE, AUD Excl. Super)",
       sm_sal_hint: "Base guaranteed salary excluding 12% Superannuation and non-guaranteed overtime/bonuses",
       sm_amsr_label: "3. Australian Market Salary Rate (AMSR, AUD)",
@@ -422,8 +499,8 @@
       specRole: "QLS Accredited Specialist in Immigration Law · PNC Legal Pty Ltd t/a Park & Co Lawyers",
       specContact: "Official Email:",
       specHubLink: "Official Consultation Hub →",
-      acc2Title: "Primary Legislation Sources (SHA-256 Monitor) & Legal Disclaimer",
-      sec5_desc: "All figures (CSIT $79,423, SSIT $146,576, SAF Levy, VAC, 494 Nil Nomination reg 2.73B, Condition 8607) are verified against primary Department of Home Affairs and Federal Register of Legislation sources.",
+      acc2Title: "Primary Source Snapshot Integrity Monitor (SHA-256 Hash Check) & Legal Disclaimer",
+      sec5_desc: "SHA-256 badges confirm HTTP availability and snapshot hash integrity of primary Department of Home Affairs and Federal Register of Legislation sources; they do not represent automated verification of every legal interpretation or individual advice.",
       thPolCat: "Category",
       thPolDoc: "Official Instrument & Link",
       thPolAuth: "Authority",
@@ -438,7 +515,7 @@
       footerLinkDama: "🌏 DAMA 13-Region Navigator (2,474 Occupations)",
       footerLinkCrisis: "🚨 Visa Refusal & Cancellation Crisis Navigator",
       footerLinkFaq: "📚 Australia Immigration Practical FAQ",
-      modalPollerTitle: "Primary Legislation Source Monitor (Live Verified)",
+      modalPollerTitle: "Primary Source Snapshot Integrity Monitor (SHA-256 Hash Sync)",
       wkhTitle: "Employer-Sponsored & Work Visa (482 SID · 186 ENS · 494 · 407) 60-Question Hub · 6 2026 Cases · Official Stats & Currentness Matrix",
       wkhDesc: "Comprehensive knowledge base verified as at 2026-11-12 against primary federal legislation (Migration Act 1958 · Migration Regulations 1994 · LIN 26/022 · LIN 24/089 · LIN 24/093 · F2026L00874 · F2026L01449), 6 2026 FCA/FCFCOA/ART decisions, and official Home Affairs BP0014 statistics (140,824 grants in 2025–26 · 268,293 holders at 2026-09-30 · 44,022 permanent Employer Sponsored outcomes).",
       wkhTabFaqs: "60 Core Q&A (W01–W60)",
@@ -541,8 +618,19 @@
   /* Pure Evaluation Functions (Testable in Node & Browser) */
   function evaluateSalaryAndStream(params) {
     const mg = params.mg || "mgr_prof";
-    const periodKey = params.periodKey || "fy26_27";
+    const rawLodgementDate = typeof params.lodgementDate === "string" ? params.lodgementDate.trim() : "";
+    const dateMappedKey = rawLodgementDate ? resolvePeriodKeyFromDate(rawLodgementDate) : null;
+    if (rawLodgementDate && !dateMappedKey) {
+      return {
+        valid: false,
+        amsrExempt250k: false,
+        errorKo: "노미네이션 실제 접수일은 유효한 날짜(YYYY-MM-DD) 형식으로 입력해 주십시오.",
+        errorEn: "Please enter a valid YYYY-MM-DD date for the exact nomination lodgement date."
+      };
+    }
+    const periodKey = dateMappedKey || params.periodKey || "fy26_27";
     const pThresh = PERIOD_THRESHOLDS[periodKey] || PERIOD_THRESHOLDS.fy26_27;
+    const isPreSid = Boolean(pThresh.isPreSid);
     const salary = Number(params.salary);
     const hasBlankAmsr = params.amsr === "" || params.amsr === null || params.amsr === undefined;
     const rawAmsr = hasBlankAmsr ? 0 : Number(params.amsr);
@@ -569,59 +657,90 @@
     const requiredOverallFloor = amsrExempt250k ? statutoryFloor : Math.max(amsr, statutoryFloor);
 
     const csitOk = salary >= activeCsit;
-    const ssitOk = salary >= activeSsit && mg !== "trades_3" && mg !== "machinery_lab_78";
-    const amsrOk = amsrExempt250k ? true : (salary >= amsr);
     const statutoryRowOk = salary >= statutoryFloor;
-    const awardGaeOk = salary >= requiredOverallFloor;
-    const damaOk = (isDama || (salary >= activeDama90 && salary < activeCsit)) && salary >= activeDama90 && amsrOk;
+    const amsrMeetsFloor = amsrExempt250k ? true : (amsr >= statutoryFloor);
+    const amsrParityOk = amsrExempt250k ? true : (salary >= amsr);
+    const amsrOk = amsrParityOk && amsrMeetsFloor;
+    const awardGaeOk = salary >= requiredOverallFloor && amsrMeetsFloor;
+    const overallSalaryOk = statutoryRowOk && amsrOk && awardGaeOk;
+
+    const ssitEligibleMajor = mg !== "trades_3" && mg !== "machinery_lab_78";
+    const ssitSalaryOnly = !isPreSid && activeSsit != null && salary >= activeSsit && ssitEligibleMajor;
+    const ssitAmsrOk = amsrExempt250k || (activeSsit != null && amsr >= activeSsit);
+    const ssitOk = ssitSalaryOnly && amsrParityOk && ssitAmsrOk;
+    const damaOk = isDama && salary >= activeDama90 && amsrOk;
+
+    const floorNameKo = isPreSid ? "구 TSMIT" : "CSIT";
+    const floorNameEn = isPreSid ? "TSMIT" : "CSIT";
+    const ssitTagKo = isPreSid || activeSsit == null ? "SSIT 미시행 (SID 출범 전 구 TSS 구간)" : `SSIT ${fmtAUD(activeSsit)}`;
+    const ssitTagEn = isPreSid || activeSsit == null ? "SSIT N/A (Pre-SID TSS Era)" : `SSIT ${fmtAUD(activeSsit)}`;
+
+    let amsrStatusKo = "";
+    let amsrStatusEn = "";
+    if (amsrExempt250k) {
+      amsrStatusKo = "IMMI 18/033 $250,000+ AMSR 심사 면제";
+      amsrStatusEn = "Exempt from AMSR evidence at AUD $250,000+";
+    } else if (!amsrMeetsFloor) {
+      amsrStatusKo = `거절 사유 (시장연봉 AMSR ${fmtAUD(amsr)} < ${floorNameKo} ${fmtAUD(statutoryFloor)})`;
+      amsrStatusEn = `Refusal Risk (AMSR ${fmtAUD(amsr)} < ${floorNameEn} ${fmtAUD(statutoryFloor)})`;
+    } else if (!amsrParityOk) {
+      amsrStatusKo = `거절 사유 (제안 연봉이 AMSR보다 ${fmtAUD(amsr - salary)} 부족)`;
+      amsrStatusEn = `Refusal Risk (${fmtAUD(amsr - salary)} below AMSR)`;
+    } else {
+      amsrStatusKo = `충족 (AMSR 및 ${floorNameKo} 이상)`;
+      amsrStatusEn = `Met (≥ AMSR & ${floorNameEn})`;
+    }
 
     const salaryRows = [
       {
         id: "csit_ssit",
         passed: statutoryRowOk,
-        labelKo: "1단계 · 법정 최소 소득 기준 (CSIT / SSIT / DAMA 90%)",
-        labelEn: "Row 1 · Statutory Income Threshold (CSIT / SSIT / DAMA 90%)",
-        valueKo: `${fmtAUD(salary)} vs ${isDama ? `DAMA 90% ${fmtAUD(activeDama90)}` : `CSIT ${fmtAUD(activeCsit)}`} (SSIT ${activeSsit < 900000 ? fmtAUD(activeSsit) : "해당없음"})`,
-        valueEn: `${fmtAUD(salary)} vs ${isDama ? `DAMA 90% ${fmtAUD(activeDama90)}` : `CSIT ${fmtAUD(activeCsit)}`} (SSIT ${activeSsit < 900000 ? fmtAUD(activeSsit) : "N/A"})`,
-        statusKo: statutoryRowOk ? (ssitOk ? "충족 (SSIT 우선심사 포함)" : "충족") : `미달 (${fmtAUD(statutoryFloor - salary)} 부족)`,
-        statusEn: statutoryRowOk ? (ssitOk ? "Met (incl. SSIT)" : "Met") : `Shortfall (${fmtAUD(statutoryFloor - salary)})`
+        labelKo: isPreSid
+          ? `1단계 · 구 법정 최소 소득 하한 (${floorNameKo} · ${pThresh.instrument})`
+          : `1단계 · 법정 최소 소득 기준 (CSIT / SSIT / DAMA 90% · ${pThresh.instrument})`,
+        labelEn: isPreSid
+          ? `Row 1 · Historical Statutory Threshold (${floorNameEn} · ${pThresh.instrument})`
+          : `Row 1 · Statutory Income Threshold (CSIT / SSIT / DAMA 90% · ${pThresh.instrument})`,
+        valueKo: `${fmtAUD(salary)} vs ${isDama ? `DAMA 90% ${fmtAUD(activeDama90)}` : `${floorNameKo} ${fmtAUD(activeCsit)}`} (${ssitTagKo})`,
+        valueEn: `${fmtAUD(salary)} vs ${isDama ? `DAMA 90% ${fmtAUD(activeDama90)}` : `${floorNameEn} ${fmtAUD(activeCsit)}`} (${ssitTagEn})`,
+        statusKo: statutoryRowOk ? (ssitOk ? "충족 (SSIT 포함)" : "하한 충족") : `미달 (${fmtAUD(statutoryFloor - salary)} 부족)`,
+        statusEn: statutoryRowOk ? (ssitOk ? "Met (incl. SSIT)" : "Floor Met") : `Shortfall (${fmtAUD(statutoryFloor - salary)})`
       },
       {
         id: "amsr",
         passed: amsrOk,
-        labelKo: "2단계 · 호주 현지 시장 연봉 (AMSR · reg 2.72(15))",
+        labelKo: "2단계 · 호주 현지 시장 연봉 대조 (AMSR · reg 2.72(15))",
         labelEn: "Row 2 · Australian Market Salary Rate (AMSR · reg 2.72(15))",
         valueKo: amsrExempt250k
           ? `${fmtAUD(salary)} ≥ AUD $250,000 (IMMI 18/033 s 6 / reg 2.72(15)(b) 시장연봉 증빙 면제)`
-          : `${fmtAUD(salary)} vs 시장연봉(AMSR) ${fmtAUD(amsr)}`,
+          : `제안 ${fmtAUD(salary)} vs 시장연봉(AMSR) ${fmtAUD(amsr)} (법정 하한 ${fmtAUD(statutoryFloor)})`,
         valueEn: amsrExempt250k
           ? `${fmtAUD(salary)} ≥ AUD $250,000 (AMSR assessment exempt · IMMI 18/033 s 6 / reg 2.72(15)(b))`
-          : `${fmtAUD(salary)} vs Market Rate (AMSR) ${fmtAUD(amsr)}`,
-        statusKo: amsrExempt250k
-          ? "IMMI 18/033 $250,000+ AMSR 심사 면제"
-          : (amsrOk ? "충족 (AMSR 이상)" : `거절 사유 (${fmtAUD(amsr - salary)} 미달)`),
-        statusEn: amsrExempt250k
-          ? "Exempt from AMSR evidence at AUD $250,000+"
-          : (amsrOk ? "Met (≥ AMSR)" : `Refusal Risk (${fmtAUD(amsr - salary)} below AMSR)`)
+          : `Offered ${fmtAUD(salary)} vs Market Rate (AMSR) ${fmtAUD(amsr)} (Floor ${fmtAUD(statutoryFloor)})`,
+        statusKo: amsrStatusKo,
+        statusEn: amsrStatusEn
       },
       {
         id: "award_gae",
         passed: awardGaeOk,
-        labelKo: "3단계 · Modern Award 최저급 및 보장연봉(GAE · 슈퍼 12% 별도)",
-        labelEn: "Row 3 · Modern Award / EA Floor & Guaranteed Annual Earnings (GAE)",
+        labelKo: "3단계 · 종합 급여 요건 (보장연봉 GAE ≥ max(법정하한, AMSR) · 슈퍼 별도)",
+        labelEn: "Row 3 · Overall Salary Requirement (GAE ≥ max(Floor, AMSR) · Excl. Super)",
         valueKo: awardApplies === "yes"
-          ? `Modern Award·단체협약 적용 직무 · 순수 보장연봉 최소 ${fmtAUD(requiredOverallFloor)} 이상 계약 필수`
-          : `Award 미적용 직무 · 개별 계약서상 보장기본급(GAE) 최소 ${fmtAUD(requiredOverallFloor)} 이상 명시 필수`,
+          ? `Modern Award·단체협약 적용 직무 · 순수 보장기본급(GAE) 최소 ${fmtAUD(requiredOverallFloor)} 이상 및 AMSR ≥ ${fmtAUD(statutoryFloor)} 필수`
+          : `Award 미적용 직무 · 개별 계약서상 보장기본급(GAE) 최소 ${fmtAUD(requiredOverallFloor)} 이상 및 AMSR ≥ ${fmtAUD(statutoryFloor)} 필수`,
         valueEn: awardApplies === "yes"
-          ? `Award/EA covered role · Guaranteed base salary must be ≥ ${fmtAUD(requiredOverallFloor)} (excl. 12% Super)`
-          : `Award-free contract · Guaranteed base salary (GAE) must be ≥ ${fmtAUD(requiredOverallFloor)} (excl. 12% Super)`,
-        statusKo: awardGaeOk ? "보장연봉 기준 충족" : "보장연봉 상향 필요",
-        statusEn: awardGaeOk ? "GAE Floor Met" : "Increase Required"
+          ? `Award/EA covered role · Guaranteed base salary (GAE) must be ≥ ${fmtAUD(requiredOverallFloor)} & AMSR ≥ ${fmtAUD(statutoryFloor)} (excl. Super)`
+          : `Award-free contract · Guaranteed base salary (GAE) must be ≥ ${fmtAUD(requiredOverallFloor)} & AMSR ≥ ${fmtAUD(statutoryFloor)} (excl. Super)`,
+        statusKo: overallSalaryOk ? "종합 급여 요건 충족" : "급여 요건 미충족 (불합격)",
+        statusEn: overallSalaryOk ? "Overall Salary Met" : "Overall Salary Failed"
       }
     ];
 
     return {
       valid: true,
+      periodKey,
+      lodgementDate: rawLodgementDate || null,
+      isPreSid,
       pThresh,
       salary,
       amsr,
@@ -632,9 +751,16 @@
       activeCsit,
       activeSsit,
       activeDama90,
+      statutoryFloor,
       requiredOverallFloor,
+      statutoryRowOk,
+      amsrMeetsFloor,
+      amsrParityOk,
       amsrOk,
+      awardGaeOk,
+      overallSalaryOk,
       csitOk,
+      ssitSalaryOnly,
       ssitOk,
       damaOk,
       mg,
@@ -1219,36 +1345,41 @@
         <svg viewBox="0 0 680 270" width="100%" style="display:block;height:auto;font-family:'Pretendard Variable','Manrope',sans-serif;">
           <rect x="0" y="0" width="680" height="270" rx="10" fill="#FBF9F5"/>
           <line x1="60" y1="215" x2="645" y2="215" stroke="#E5DFD3" stroke-width="1.5"/>
-          <rect x="85" y="142" width="44" height="73" rx="5" fill="#7D756D"/>
-          <text x="107" y="135" text-anchor="middle" font-size="11" font-weight="700" fill="#14282A">$53,900</text>
-          <text x="107" y="235" text-anchor="middle" font-size="11" font-weight="600" fill="#47433E">2013–2023</text>
-          <text x="107" y="250" text-anchor="middle" font-size="9.5" fill="#7D756D">${en ? "Frozen TSMIT" : "10년 동결 TSMIT"}</text>
+          <rect x="65" y="142" width="38" height="73" rx="5" fill="#7D756D"/>
+          <text x="84" y="135" text-anchor="middle" font-size="10.5" font-weight="700" fill="#14282A">$53,900</text>
+          <text x="84" y="235" text-anchor="middle" font-size="10" font-weight="600" fill="#47433E">2013–Jun 23</text>
+          <text x="84" y="250" text-anchor="middle" font-size="9" fill="#7D756D">${en ? "Frozen TSMIT" : "동결 TSMIT"}</text>
 
-          <rect x="190" y="120" width="44" height="95" rx="5" fill="#1F5A5E"/>
-          <text x="212" y="113" text-anchor="middle" font-size="11" font-weight="700" fill="#1F5A5E">$70,000</text>
-          <text x="212" y="235" text-anchor="middle" font-size="11" font-weight="600" fill="#47433E">FY23–24</text>
-          <text x="212" y="250" text-anchor="middle" font-size="9.5" fill="#7D756D">1 Jul 2023</text>
+          <rect x="148" y="120" width="38" height="95" rx="5" fill="#1F5A5E"/>
+          <text x="167" y="113" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1F5A5E">$70,000</text>
+          <text x="167" y="235" text-anchor="middle" font-size="10" font-weight="600" fill="#47433E">FY23–24</text>
+          <text x="167" y="250" text-anchor="middle" font-size="9" fill="#7D756D">~30 Jun 2024</text>
 
-          <rect x="295" y="115" width="36" height="100" rx="5" fill="#0E3A3E"/>
-          <rect x="335" y="38" width="36" height="177" rx="5" fill="#B68B40"/>
-          <text x="313" y="108" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0E3A3E">$73,150</text>
-          <text x="353" y="31" text-anchor="middle" font-size="10.5" font-weight="700" fill="#8A6626">$135,000</text>
-          <text x="333" y="235" text-anchor="middle" font-size="11" font-weight="600" fill="#47433E">Dec 2024</text>
-          <text x="333" y="250" text-anchor="middle" font-size="9.5" fill="#7D756D">${en ? "SID 482 Launch" : "SID 482 출범"}</text>
+          <rect x="232" y="115" width="38" height="100" rx="5" fill="#28666B"/>
+          <text x="251" y="108" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1F5A5E">$73,150</text>
+          <text x="251" y="235" text-anchor="middle" font-size="9.8" font-weight="600" fill="#47433E">1 Jul–6 Dec 24</text>
+          <text x="251" y="250" text-anchor="middle" font-size="9" fill="#7D756D">${en ? "LIN 24/052 TSS" : "LIN 24/052 구 TSS"}</text>
 
-          <rect x="420" y="110" width="36" height="105" rx="5" fill="#0E3A3E"/>
-          <rect x="460" y="30" width="36" height="185" rx="5" fill="#B68B40"/>
-          <text x="438" y="103" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0E3A3E">$76,515</text>
-          <text x="478" y="23" text-anchor="middle" font-size="10.5" font-weight="700" fill="#8A6626">$141,210</text>
-          <text x="458" y="235" text-anchor="middle" font-size="11" font-weight="600" fill="#47433E">FY25–26</text>
-          <text x="458" y="250" text-anchor="middle" font-size="9.5" fill="#7D756D">DAMA 90%: $68,864</text>
+          <rect x="316" y="115" width="34" height="100" rx="5" fill="#0E3A3E"/>
+          <rect x="354" y="38" width="34" height="177" rx="5" fill="#B68B40"/>
+          <text x="333" y="108" text-anchor="middle" font-size="10" font-weight="700" fill="#0E3A3E">$73,150</text>
+          <text x="371" y="31" text-anchor="middle" font-size="10" font-weight="700" fill="#8A6626">$135,000</text>
+          <text x="352" y="235" text-anchor="middle" font-size="9.8" font-weight="600" fill="#47433E">7 Dec 24–Jun 25</text>
+          <text x="352" y="250" text-anchor="middle" font-size="9" fill="#7D756D">${en ? "SID 482 Launch" : "SID 482 출범"}</text>
 
-          <rect x="545" y="104" width="38" height="111" rx="5" fill="#0E3A3E"/>
-          <rect x="587" y="22" width="38" height="193" rx="5" fill="#B68B40"/>
-          <text x="564" y="96" text-anchor="middle" font-size="11" font-weight="800" fill="#0E3A3E">$79,423</text>
-          <text x="606" y="15" text-anchor="middle" font-size="11" font-weight="800" fill="#8A6626">$146,576</text>
-          <text x="585" y="235" text-anchor="middle" font-size="11" font-weight="800" fill="#14282A">${en ? "FY26–27 (Current)" : "FY26–27 (현행)"}</text>
-          <text x="585" y="250" text-anchor="middle" font-size="9.5" font-weight="700" fill="#2E6B4F">DAMA 90%: $71,481</text>
+          <rect x="432" y="110" width="34" height="105" rx="5" fill="#0E3A3E"/>
+          <rect x="470" y="30" width="34" height="185" rx="5" fill="#B68B40"/>
+          <text x="449" y="103" text-anchor="middle" font-size="10" font-weight="700" fill="#0E3A3E">$76,515</text>
+          <text x="487" y="23" text-anchor="middle" font-size="10" font-weight="700" fill="#8A6626">$141,210</text>
+          <text x="468" y="235" text-anchor="middle" font-size="10.5" font-weight="600" fill="#47433E">FY25–26</text>
+          <text x="468" y="250" text-anchor="middle" font-size="9" fill="#7D756D">DAMA 90%: $68,864</text>
+
+          <rect x="550" y="104" width="36" height="111" rx="5" fill="#0E3A3E"/>
+          <rect x="590" y="22" width="36" height="193" rx="5" fill="#B68B40"/>
+          <text x="568" y="96" text-anchor="middle" font-size="10.5" font-weight="800" fill="#0E3A3E">$79,423</text>
+          <text x="608" y="15" text-anchor="middle" font-size="10.5" font-weight="800" fill="#8A6626">$146,576</text>
+          <text x="588" y="235" text-anchor="middle" font-size="10.5" font-weight="800" fill="#14282A">${en ? "FY26–27 (Current)" : "FY26–27 (현행)"}</text>
+          <text x="588" y="250" text-anchor="middle" font-size="9" font-weight="700" fill="#2E6B4F">DAMA 90%: $71,481</text>
 
           <rect x="70" y="14" width="12" height="12" rx="2" fill="#0E3A3E"/>
           <text x="87" y="24" font-size="10.5" font-weight="700" fill="#14282A">CSIT (Core Skills · 186)</text>
@@ -1361,9 +1492,19 @@
     }
 
     const en = STATE.lang === "en";
+    const dateInputEl = document.getElementById("sm-lodgement-date");
+    const periodSelectEl = document.getElementById("sm-lodgement-period");
+    const rawLodgementDate = dateInputEl?.value ? dateInputEl.value.trim() : "";
+    if (rawLodgementDate) {
+      const mappedPeriod = resolvePeriodKeyFromDate(rawLodgementDate);
+      if (mappedPeriod && periodSelectEl && periodSelectEl.value !== mappedPeriod) {
+        periodSelectEl.value = mappedPeriod;
+      }
+    }
     const res = evaluateSalaryAndStream({
       mg: document.getElementById("sm-major-group")?.value,
-      periodKey: document.getElementById("sm-lodgement-period")?.value,
+      periodKey: periodSelectEl?.value,
+      lodgementDate: rawLodgementDate,
       salary: document.getElementById("sm-offered-salary")?.value,
       amsr: document.getElementById("sm-amsr")?.value,
       auWorker: document.getElementById("sm-au-worker")?.value,
@@ -1385,40 +1526,77 @@
     `).join("");
 
     const badges = [];
+    const periodTag = en ? (res.pThresh.labelEn || res.pThresh.label) : (res.pThresh.labelKo || res.pThresh.label);
+    const dateBadgeNote = res.lodgementDate
+      ? (en ? ` · Nomination Date <code>${escapeHtml(res.lodgementDate)}</code>` : ` · 노미네이션 접수일 <code>${escapeHtml(res.lodgementDate)}</code>`)
+      : "";
+
     if (res.amsrExempt250k) {
       badges.push(en
         ? `<div id="amsr-250k-callout" class="alert-box alert-box--success"><strong>✅ IMMI 18/033 s 6 · reg 2.72(15)(b) AUD $250,000+ AMSR Assessment Exemption</strong>: Because nominated Guaranteed Annual Earnings (${fmtAUD(res.salary)}) are AUD $250,000 or higher, statutory AMSR market salary evidence (equivalent Australian worker payslips, remuneration surveys, or local job ads) is exempt.</div>`
         : `<div id="amsr-250k-callout" class="alert-box alert-box--success"><strong>✅ IMMI 18/033 s 6 · reg 2.72(15)(b) 고액 연봉(AUD $250,000+) AMSR 심사 면제</strong>: 제안 보장연봉(${fmtAUD(res.salary)})이 AUD $250,000 이상이므로 호주 현지 시장 연봉(AMSR) 비교 증빙 자료(호주인 동료 급여명세서·연봉 조사·구인광고) 제출이 법령상 면제됩니다.</div>`);
     }
 
-    if (!res.amsrOk) {
-      badges.push(en
-        ? `<div class="alert-box alert-box--danger"><strong>❌ Below Market Salary Rate (AMSR) (${fmtAUD(res.salary)} &lt; AMSR ${fmtAUD(res.amsr)})</strong>: Nomination faces refusal under reg 2.72(15) if offered earnings are below AMSR. Minimum required is <strong>${fmtAUD(res.requiredOverallFloor)}</strong>.</div>`
-        : `<div class="alert-box alert-box--danger"><strong>❌ 시장 연봉(AMSR) 미달 (${fmtAUD(res.salary)} &lt; AMSR ${fmtAUD(res.amsr)})</strong>: 제안 연봉이 호주 현지 시장 연봉(AMSR)보다 낮으면 CSIT 충족 여부와 무관하게 노미네이션이 거절됩니다(reg 2.72(15) 및 reg 2.79 위반). 최소 <strong>${fmtAUD(res.requiredOverallFloor)}</strong> 이상이어야 합니다.</div>`);
+    if (res.isPreSid) {
+      if (!res.overallSalaryOk) {
+        const failReasonEn = !res.statutoryRowOk
+          ? `Offered salary (${fmtAUD(res.salary)}) is <strong>${fmtAUD(res.statutoryFloor - res.salary)}</strong> below the statutory TSMIT floor (${fmtAUD(res.statutoryFloor)} under ${res.pThresh.instrument}).`
+          : (!res.amsrMeetsFloor
+            ? `Market salary rate AMSR (${fmtAUD(res.amsr)}) is below the statutory TSMIT floor (${fmtAUD(res.statutoryFloor)} under ${res.pThresh.instrument} &amp; reg 2.72(15)(d)).`
+            : `Offered salary (${fmtAUD(res.salary)}) is <strong>${fmtAUD(res.amsr - res.salary)}</strong> below the Australian Market Salary Rate (${fmtAUD(res.amsr)}) under reg 2.72(15)(e); meeting the ${fmtAUD(res.statutoryFloor)} TSMIT floor alone does NOT satisfy the nomination salary requirement.`);
+        const failReasonKo = !res.statutoryRowOk
+          ? `제안 보장연봉(${fmtAUD(res.salary)})이 당시 시행 법령(${res.pThresh.instrument})상 법정 구 TSMIT 하한선(${fmtAUD(res.statutoryFloor)})보다 <strong>${fmtAUD(res.statutoryFloor - res.salary)}</strong> 부족합니다.`
+          : (!res.amsrMeetsFloor
+            ? `호주 현지 시장 연봉 AMSR(${fmtAUD(res.amsr)}) 자체가 당시 법정 구 TSMIT(${fmtAUD(res.statutoryFloor)} · ${res.pThresh.instrument}) 미만이어서 reg 2.72(15)(d) 요건을 충족하지 못합니다.`
+            : `제안 보장연봉(${fmtAUD(res.salary)})이 구 TSMIT 하한(${fmtAUD(res.statutoryFloor)})은 넘으나 호주 현지 시장 연봉 AMSR(${fmtAUD(res.amsr)})보다 <strong>${fmtAUD(res.amsr - res.salary)}</strong> 낮아 전체 급여 요건에 불합격합니다(reg 2.72(15)(e)).`);
+        badges.push(en
+          ? `<div class="alert-box alert-box--danger"><strong>❌ Pre-SID Historical Nomination Salary Requirement Failed (${periodTag}${dateBadgeNote})</strong>: ${failReasonEn} Minimum required Guaranteed Annual Earnings: <strong>${fmtAUD(res.requiredOverallFloor)}</strong>.</div>`
+          : `<div class="alert-box alert-box--danger"><strong>❌ 구 TSS 482 구간 노미네이션 급여 요건 불합격 (${periodTag}${dateBadgeNote})</strong>: ${failReasonKo} 최소 요구 보장연봉: <strong>${fmtAUD(res.requiredOverallFloor)}</strong>.</div>`);
+      } else {
+        badges.push(en
+          ? `<div class="alert-box alert-box--success"><strong>✅ Pre-SID Historical Statutory Salary Floor Met (${periodTag}${dateBadgeNote} · TSMIT ${fmtAUD(res.statutoryFloor)} · ${res.pThresh.instrument})</strong>: Offered Guaranteed Annual Earnings (${fmtAUD(res.salary)}) meet both the in-force TSMIT floor (${fmtAUD(res.statutoryFloor)}) and AMSR (${fmtAUD(res.amsr)}).<br/><em>Important Era Distinction:</em> Nominations lodged before <strong>7 December 2024</strong> were governed by the legacy <strong>TSS Subclass 482 / ENS 186</strong> framework—modern SID streams, SSIT, CSOL, and 1-year experience rules did NOT apply. Satisfying the salary floor alone does NOT establish full visa eligibility (era-specific STSOL/MLTSSL/ROL occupation lists, legacy 2-year full-time experience, LMT, English, and skills/age criteria apply separately).</div>`
+          : `<div class="alert-box alert-box--success"><strong>✅ 구 TSS 482 구간 법정 급여 하한 기준 충족 (${periodTag}${dateBadgeNote} · 구 TSMIT ${fmtAUD(res.statutoryFloor)} · ${res.pThresh.instrument})</strong>: 제안 보장연봉(${fmtAUD(res.salary)})이 당시 시행 구 TSMIT(${fmtAUD(res.statutoryFloor)})와 시장연봉 AMSR(${fmtAUD(res.amsr)})을 모두 충족합니다.<br/><em>법령 구간 구분 유의:</em> <strong>2024년 12월 7일 이전</strong> 접수 노미네이션에는 현행 SID 스트림·SSIT·통합 직군 리스트·1년 경력 완화 규정이 소급 적용되지 않습니다. 급여 하한 충족만으로 비자 전체 적격성이 인정되는 것은 아니므로 당시 시행 직종 리스트(STSOL·MLTSSL·ROL), 구 TSS 2년 경력, LMT, 영어·기술심사·연령 요건을 별도로 충족해야 합니다.</div>`);
+      }
+    } else if (!res.overallSalaryOk) {
+      if (!res.statutoryRowOk) {
+        badges.push(en
+          ? `<div class="alert-box alert-box--danger"><strong>❌ Below Statutory Income Floor (${periodTag}${dateBadgeNote} · ${res.isDama ? `DAMA 90% ${fmtAUD(res.activeDama90)}` : `CSIT ${fmtAUD(res.activeCsit)}`})</strong>: Offered salary (${fmtAUD(res.salary)}) is <strong>${fmtAUD(res.statutoryFloor - res.salary)}</strong> short of the applicable statutory floor (${res.pThresh.instrument}).${!res.isDama ? ` (Note: regional DAMA Labour Agreements have separate 90% CSIT schedules [${fmtAUD(res.activeDama90)}] only where an endorsed DAMA applies.)` : ""}</div>`
+          : `<div class="alert-box alert-box--danger"><strong>❌ 법정 최소 연봉 기준 미달 (${periodTag}${dateBadgeNote} · ${res.isDama ? `DAMA 90% ${fmtAUD(res.activeDama90)}` : `CSIT ${fmtAUD(res.activeCsit)}`})</strong>: 제안 보장연봉(${fmtAUD(res.salary)})이 적용 법령(${res.pThresh.instrument}) 하한선보다 <strong>${fmtAUD(res.statutoryFloor - res.salary)}</strong> 부족하여 불합격입니다.${!res.isDama ? ` (참고: 지정지역 DAMA 협정 승인 사업장에 한해 별도 90% 감면 기준[${fmtAUD(res.activeDama90)}] 검토 가능)` : ""}</div>`);
+      }
+      if (!res.amsrOk) {
+        const amsrDetailEn = !res.amsrMeetsFloor
+          ? `Australian Market Salary Rate (${fmtAUD(res.amsr)}) is itself below the statutory floor (${fmtAUD(res.statutoryFloor)}) contrary to reg 2.72(15)(d).`
+          : `Offered salary (${fmtAUD(res.salary)}) is <strong>${fmtAUD(res.amsr - res.salary)}</strong> below AMSR (${fmtAUD(res.amsr)}) contrary to reg 2.72(15)(e), so meeting CSIT (${fmtAUD(res.activeCsit)}) alone still results in nomination refusal.`;
+        const amsrDetailKo = !res.amsrMeetsFloor
+          ? `호주 현지 시장 연봉 AMSR(${fmtAUD(res.amsr)}) 자체가 법정 소득 기준(${fmtAUD(res.statutoryFloor)}) 미만이어서 reg 2.72(15)(d)에 따라 노미네이션이 거절됩니다.`
+          : `제안 연봉(${fmtAUD(res.salary)})이 CSIT(${fmtAUD(res.activeCsit)}) 이상이더라도 호주 현지 시장 연봉 AMSR(${fmtAUD(res.amsr)})보다 <strong>${fmtAUD(res.amsr - res.salary)}</strong> 낮아 reg 2.72(15)(e) 및 reg 2.79 위반으로 전체 급여 요건 불합격입니다.`;
+        badges.push(en
+          ? `<div class="alert-box alert-box--danger"><strong>❌ Overall Salary Requirement Failed — AMSR Shortfall (${periodTag}${dateBadgeNote})</strong>: ${amsrDetailEn} Minimum required Guaranteed Annual Earnings: <strong>${fmtAUD(res.requiredOverallFloor)}</strong>.</div>`
+          : `<div class="alert-box alert-box--danger"><strong>❌ 전체 급여 요건 불합격 — 시장 연봉(AMSR) 미달 (${periodTag}${dateBadgeNote})</strong>: ${amsrDetailKo} 최소 요구 보장연봉: <strong>${fmtAUD(res.requiredOverallFloor)}</strong>.</div>`);
+      }
     } else {
       if (res.ssitOk) {
         badges.push(en
-          ? `<div class="alert-box alert-box--success"><strong>✅ SID 482 Specialist Skills Stream Eligible (${fmtAUD(res.salary)} ≥ SSIT ${fmtAUD(res.activeSsit)})</strong>: Eligible without CSOL occupation list restriction and qualifies for ENS 186 TRT PR after 2 years.</div>`
-          : `<div class="alert-box alert-box--success"><strong>✅ SID 482 Specialist Skills 스트림 적격 (${fmtAUD(res.salary)} ≥ SSIT ${fmtAUD(res.activeSsit)})</strong>: 직군 리스트(CSOL) 포함 여부와 무관하게 우선심사 트랙 대상이며 2년 후 ENS 186 TRT 영주권 전환이 가능합니다.</div>`);
+          ? `<div class="alert-box alert-box--success"><strong>✅ SID 482 Specialist Skills Salary Threshold Met (${fmtAUD(res.salary)} ≥ SSIT ${fmtAUD(res.activeSsit)}${dateBadgeNote})</strong>: Meets the Specialist Skills salary &amp; AMSR layer without CSOL occupation list restriction (subject to ANZSCO Major Group exclusion, LMT, 1 yr FTE experience, English, and character/health criteria).</div>`
+          : `<div class="alert-box alert-box--success"><strong>✅ SID 482 Specialist Skills 급여 기준 충족 (${fmtAUD(res.salary)} ≥ SSIT ${fmtAUD(res.activeSsit)}${dateBadgeNote})</strong>: CSOL 직군 리스트 제한 없이 우선심사 트랙의 급여·AMSR 요건을 충족합니다 (단 직군 대분류 제한, LMT, 1년 경력, 영어·신원·신체검사 등 별도 비자 요건 충족 필수).</div>`);
+      } else if (res.ssitSalaryOnly && !res.amsrExempt250k && res.amsr < res.activeSsit) {
+        badges.push(en
+          ? `<div class="alert-box alert-box--warn"><strong>⚠️ Specialist Skills AMSR Caution (reg 2.72(15)(d)(i))</strong>: Offered salary (${fmtAUD(res.salary)}) exceeds SSIT (${fmtAUD(res.activeSsit)}), but Specialist Skills also requires the role's AMSR (${fmtAUD(res.amsr)}) to be ≥ SSIT unless exempt at AUD $250,000+. Core Skills CSIT (${fmtAUD(res.activeCsit)}) salary layer is met.</div>`
+          : `<div class="alert-box alert-box--warn"><strong>⚠️ Specialist Skills 시장연봉(AMSR) 유의 (reg 2.72(15)(d)(i))</strong>: 제안 연봉(${fmtAUD(res.salary)})은 SSIT(${fmtAUD(res.activeSsit)}) 이상이나 Specialist Skills 스트림은 직무 자체의 시장연봉 AMSR(${fmtAUD(res.amsr)})도 SSIT 이상이어야 합니다($250,000+ 면제 제외). Core Skills CSIT(${fmtAUD(res.activeCsit)}) 급여 요건은 충족합니다.</div>`);
       }
       if (res.csitOk && (res.mg === "mgr_prof" || res.mg === "trades_3")) {
         badges.push(en
-          ? `<div class="alert-box alert-box--success"><strong>✅ SID 482 Core Skills &amp; ENS 186 Salary Met (${fmtAUD(res.salary)} ≥ ${res.pThresh.label} CSIT ${fmtAUD(res.activeCsit)})</strong>: Eligible for 482 Core Skills (1 yr FTE) and 186 Direct Entry (3 yrs FTE + Skills Assessment) where on CSOL (456 occupations).</div>`
-          : `<div class="alert-box alert-box--success"><strong>✅ SID 482 Core Skills &amp; ENS 186 연봉 요건 충족 (${fmtAUD(res.salary)} ≥ ${res.pThresh.label} CSIT ${fmtAUD(res.activeCsit)})</strong>: CSOL(456개 직군)에 포함되면 1년 경력으로 482 Core Skills, 3년 경력 및 기술심사로 186 Direct Entry 신청이 가능합니다.</div>`);
+          ? `<div class="alert-box alert-box--success"><strong>✅ SID 482 Core Skills &amp; ENS 186 Salary Threshold Met (${fmtAUD(res.salary)} ≥ ${res.pThresh.label} CSIT ${fmtAUD(res.activeCsit)} &amp; AMSR ${fmtAUD(res.amsr)}${dateBadgeNote})</strong>: Satisfies the statutory nomination salary floor. Full visa eligibility also requires CSOL (456 occupations) / TRT occupation match, LMT, qualifying FTE experience (1 yr for SID 482 / 2 yrs for 186 TRT / 3 yrs + Skills Assessment for 186 DE), English, and age criteria.</div>`
+          : `<div class="alert-box alert-box--success"><strong>✅ SID 482 Core Skills &amp; ENS 186 급여 기준 충족 (${fmtAUD(res.salary)} ≥ ${res.pThresh.label} CSIT ${fmtAUD(res.activeCsit)} 및 AMSR ${fmtAUD(res.amsr)}${dateBadgeNote})</strong>: 노미네이션 법정 급여 하한을 충족합니다 (최종 비자 적격성은 CSOL 456개 직군 해당 여부, LMT, 요구 경력[SID 1년 / 186 TRT 2년 / 186 DE 3년+기술심사], 영어 및 연령 요건을 별도 심사).</div>`);
       } else if (res.csitOk && (res.mg === "non_csol_high" || res.mg === "machinery_lab_78") && !res.ssitOk) {
         badges.push(en
           ? `<div class="alert-box alert-box--warn"><strong>⚠️ Non-CSOL / Skill Level 4–5 Pathway Check</strong>: Salary meets CSIT (${fmtAUD(res.activeCsit)}). Where the occupation is outside CSOL, check our <a href="https://changa9090.github.io/parkco-dama-navigator/?lang=en"><strong>DAMA 13-Region Navigator (2,474 Occupations) →</strong></a> or Specialist Skills (${fmtAUD(res.activeSsit)}).</div>`
           : `<div class="alert-box alert-box--warn"><strong>⚠️ CSOL 미포함 / Skill Level 4–5 직군 대체 경로 점검</strong>: 연봉은 CSIT(${fmtAUD(res.activeCsit)}) 이상이나 직군이 CSOL 외에 해당하는 경우 <a href="https://changa9090.github.io/parkco-dama-navigator/"><strong>DAMA 13개 지역 협정 네비게이터(2,474개 직군) →</strong></a> 또는 SSIT(${fmtAUD(res.activeSsit)}) 요건을 검토하십시오.</div>`);
       }
-      if (res.damaOk) {
+      if (res.damaOk && !res.csitOk) {
         badges.push(en
-          ? `<div class="alert-box alert-box--success"><strong>✅ DAMA 90% CSIT Concession (${fmtAUD(res.activeDama90)}) Eligible</strong>: Qualifies under regional DAMA salary concessions. <a href="https://changa9090.github.io/parkco-dama-navigator/?lang=en"><strong>Search 13 DAMA occupation lists →</strong></a></div>`
-          : `<div class="alert-box alert-box--success"><strong>✅ DAMA CSIT 90% 감면 특례 (${fmtAUD(res.activeDama90)}) 적격 구간</strong>: 일반 CSIT(${fmtAUD(res.activeCsit)}) 미만 구간이라도 지정지역 DAMA 협정을 통한 스폰서십 및 186 영주권 전환 설계가 가능합니다. <a href="https://changa9090.github.io/parkco-dama-navigator/"><strong>13개 DAMA 협정 직군 검색하기 →</strong></a></div>`);
-      }
-      if (!res.csitOk && !res.damaOk) {
-        badges.push(en
-          ? `<div class="alert-box alert-box--danger"><strong>❌ Below Minimum CSIT (${fmtAUD(res.activeCsit)})</strong>: Offered salary (${fmtAUD(res.salary)}) is <strong>${fmtAUD(res.activeCsit - res.salary)}</strong> short of standard CSIT (or requires ≥${fmtAUD(res.activeDama90)} under a regional DAMA 90% concession).</div>`
-          : `<div class="alert-box alert-box--danger"><strong>❌ 최소 연봉 기준(${fmtAUD(res.activeCsit)}) 미달</strong>: 현재 제안 연봉(${fmtAUD(res.salary)})이 법정 하한선보다 <strong>${fmtAUD(res.activeCsit - res.salary)}</strong> 부족합니다 (지방 DAMA 90% 특례 적용 시에도 최소 ${fmtAUD(res.activeDama90)} 이상 필요).</div>`);
+          ? `<div class="alert-box alert-box--success"><strong>✅ DAMA 90% CSIT Salary Concession Met (${fmtAUD(res.salary)} ≥ ${fmtAUD(res.activeDama90)}${dateBadgeNote})</strong>: Satisfies the 90% CSIT salary concession floor under an endorsed regional DAMA Labour Agreement (subject to specific DAMA occupation schedule, LMT, skills, and concession terms). <a href="https://changa9090.github.io/parkco-dama-navigator/?lang=en"><strong>Search 13 DAMA occupation lists →</strong></a></div>`
+          : `<div class="alert-box alert-box--success"><strong>✅ DAMA CSIT 90% 감면 급여 기준 충족 (${fmtAUD(res.salary)} ≥ ${fmtAUD(res.activeDama90)}${dateBadgeNote})</strong>: 지정지역 DAMA 노동협정상 90% CSIT 급여 감면 하한을 충족합니다 (실제 승인 여부는 해당 지역 DAMA 협정 직군 포함 여부, LMT 및 개별 협정 조건에 따름). <a href="https://changa9090.github.io/parkco-dama-navigator/"><strong>13개 DAMA 협정 직군 검색하기 →</strong></a></div>`);
       }
     }
 
@@ -2156,8 +2334,8 @@
           <div style="font-size:12px;color:#47433E;background:#FFFFFF;border:1px solid #E5DFD3;border-radius:6px;padding:8px 10px;margin-bottom:8px;">
             <strong>${escapeHtml(isEn ? "Scope & Caution: " : "적용 범위 및 한계: ")}</strong>${escapeHtml(isEn ? c.limit_en : c.limit_ko)}
           </div>
-          <a href="${escapeHtml(c.primary_url || "https://www.austlii.edu.au/")}" target="_blank" rel="noopener" style="font-size:12px;font-weight:700;color:#0E3A3E;">
-            ${escapeHtml(isEn ? "Verify Full Judgment on AustLII ↗" : "AustLII 원문 판결문 확인 ↗")}
+          <a href="${escapeHtml(c.primary_url || "https://www.judgments.fedcourt.gov.au/")}" target="_blank" rel="noopener" style="font-size:12px;font-weight:700;color:#0E3A3E;">
+            ${escapeHtml(isEn ? "Verify Official Court Judgment ↗" : "연방법원 공식 판결문 원문 확인 ↗")}
           </a>
         </div>
       `).join("") + `</div>`;
@@ -2568,7 +2746,15 @@
       });
     }
 
-    ["sm-major-group", "sm-lodgement-period", "sm-offered-salary", "sm-amsr", "sm-au-worker", "sm-award-applies", "sm-dama-region"].forEach((id) => {
+    document.getElementById("sm-lodgement-period")?.addEventListener("change", function () {
+      const dEl = document.getElementById("sm-lodgement-date");
+      if (dEl && dEl.value && resolvePeriodKeyFromDate(dEl.value) !== this.value) {
+        dEl.value = "";
+      }
+      STATE.hasInteracted = true;
+      updateStreamChecker();
+    });
+    ["sm-major-group", "sm-lodgement-date", "sm-offered-salary", "sm-amsr", "sm-au-worker", "sm-award-applies", "sm-dama-region"].forEach((id) => {
       document.getElementById(id)?.addEventListener("input", markInteractedAndRun(updateStreamChecker));
       document.getElementById(id)?.addEventListener("change", markInteractedAndRun(updateStreamChecker));
     });
@@ -2681,6 +2867,7 @@
   const exportedApi = {
     ParkCoDates,
     PERIOD_THRESHOLDS,
+    resolvePeriodKeyFromDate,
     AGE_EX_LABELS,
     DOC_TITLES,
     DEFAULT_SOURCES,

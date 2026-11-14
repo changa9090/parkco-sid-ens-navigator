@@ -108,9 +108,9 @@
       </nav>
 
       <div class="pk-unified-header__actions">
-        <button type="button" id="btn-polling-status" class="pk-poll-pill" title="Primary Source Verification Monitor">
+        <button type="button" id="btn-polling-status" class="pk-poll-pill" title="1차 출처 스냅샷 SHA-256 해시 무결성 모니터 (법률 자문 자동 보증 아님) · Primary Source SHA-256 Snapshot Integrity Monitor">
           <span class="pk-poll-dot"></span>
-          <span data-i18n="pollBtnLabel">14/14 출처 검증</span>
+          <span data-i18n="pollBtnLabel">14/14 스냅샷 무결성</span>
         </button>
         <a href="https://parklawyers.com.au/links/?lang=ko" data-ko-href="https://parklawyers.com.au/links/?lang=ko" data-en-href="https://parklawyers.com.au/links/" target="_blank" rel="noopener" class="pk-unified-header__hub-btn cta-enquiry parkco-svc-link" id="top-cta" data-i18n="topCta">공식 문의 허브</a>
         <div class="pk-lang-toggle" role="group" aria-label="Language Switcher">
@@ -180,10 +180,14 @@
               <select id="sm-lodgement-period" class="form-control">
                 <option value="fy26_27" selected data-i18n="optPer2627">FY2026–27 (2026.07.01 이후 현행 · CSIT $79,423 · SSIT $146,576 · DAMA $71,481)</option>
                 <option value="fy25_26" data-i18n="optPer2526">FY2025–26 (2025.07.01~2026.06.30 · CSIT $76,515 · SSIT $141,210 · DAMA $68,864)</option>
-                <option value="fy24_25_sid" data-i18n="optPer2425">FY2024–25 (2024.12.07~2025.06.30 SID 출범 · CSIT $73,150 · SSIT $135,000)</option>
-                <option value="fy23_24" data-i18n="optPer2324">FY2023–24 (2023.07.01~2024.12.06 · 구 TSMIT $70,000)</option>
-                <option value="2013_2023" data-i18n="optPer1323">2013 ~ 2023.06.30 (10년 동결 구 TSMIT $53,900)</option>
+                <option value="fy24_25_sid" data-i18n="optPer2425">FY2024–25 SID 구간 (2024.12.07~2025.06.30 SID 출범 · CSIT $73,150 · SSIT $135,000)</option>
+                <option value="fy24_25_tss" data-i18n="optPer2425Tss">FY2024–25 구 TSS 구간 (2024.07.01~2024.12.06 · LIN 24/052 구 TSMIT $73,150)</option>
+                <option value="fy23_24" data-i18n="optPer2324">FY2023–24 구 TSS 구간 (2023.07.01~2024.06.30 · LIN 23/045 구 TSMIT $70,000)</option>
+                <option value="2013_2023" data-i18n="optPer1323">2013 ~ 2023.06.30 (구 457·TSS 10년 동결 · 구 TSMIT $53,900)</option>
               </select>
+              <label for="sm-lodgement-date" style="display:block;margin-top:8px;font-size:12px;font-weight:700;color:#47433E;" data-i18n="sm_period_date_label">선택 입력: 노미네이션 실제 접수일 (경계일 자동 매칭)</label>
+              <input type="date" id="sm-lodgement-date" class="form-control" style="margin-top:3px;" />
+              <small class="form-hint" data-i18n="sm_period_date_hint">접수일(예: 2024-06-30, 2024-07-01, 2024-12-06, 2024-12-07)을 입력하면 당시 시행 법령 구간이 자동 적용됩니다.</small>
             </div>
           </div>
           <div class="pk-form-row-2">
@@ -808,9 +812,9 @@
 
       <!-- Accordion 2: Primary Source SHA-256 Poller Table & Legal Disclaimer -->
       <details class="pk-disclosure" id="disclosure-sources" style="margin-top:12px;">
-        <summary><span data-i18n="acc2Title">1차 법령 데이터 출처 확인 (SHA-256 검증 모니터) &amp; 법률 면책공고</span></summary>
+        <summary><span data-i18n="acc2Title">1차 법령 스냅샷 무결성 모니터 (SHA-256 해시 대조) &amp; 법률 면책공고</span></summary>
         <div class="pk-disclosure__body" id="poller-monitor">
-          <p style="margin-top:0;font-size:13.5px;color:#47433E;" data-i18n="sec5_desc">본 네비게이터의 모든 수치(CSIT $79,423, SSIT $146,576, SAF Levy, VAC, 494 노미네이션 $0 reg 2.73B, Condition 8607)는 호주 연방 이민성 및 연방 법령 등록부(FRL) 1차 출처 스냅샷과 해시(SHA-256)에 기반합니다.</p>
+          <p style="margin-top:0;font-size:13.5px;color:#47433E;" data-i18n="sec5_desc">본 모니터의 SHA-256 상태 표시는 호주 이민성 및 연방 법령 등록부(FRL) 1차 출처 원문의 HTTP 수신 가능 여부와 스냅샷 파일 무결성(해시 일치)을 점검한 기술적 지표이며 개별 사건의 법령 해석이나 자문 적정성을 자동 보증하지 않습니다.</p>
           <div class="table-wrap" style="margin-bottom:20px;">
             <table class="data-table">
               <thead>

@@ -15,17 +15,27 @@
       },
       {
         "id": "fy23_24",
-        "period": "FY2023–24 (1 Jul 2023 – 6 Dec 2024)",
+        "period": "FY2023–24 (1 Jul 2023 – 30 Jun 2024)",
         "csit_tsmit": 70000,
         "ssit": null,
         "dama_90": 63000,
         "fwhit": 167500,
-        "note_ko": "TSMIT $70,000 인상 (482 TSS 기준)",
-        "note_en": "TSMIT raised to $70,000"
+        "note_ko": "LIN 23/045 구 TSMIT $70,000 인상 (구 TSS 482 구간)",
+        "note_en": "LIN 23/045 Legacy TSMIT $70,000 (Pre-SID TSS 482)"
+      },
+      {
+        "id": "fy24_25_tss",
+        "period": "FY2024–25 Pre-SID (1 Jul 2024 – 6 Dec 2024)",
+        "csit_tsmit": 73150,
+        "ssit": null,
+        "dama_90": 65835,
+        "fwhit": 175000,
+        "note_ko": "LIN 24/052 (F2024L00833) 구 TSMIT $73,150 인상 (SID 출범 전 구 TSS 482 구간)",
+        "note_en": "LIN 24/052 (F2024L00833) TSMIT $73,150 (Pre-SID TSS 482 Era)"
       },
       {
         "id": "fy24_25_sid",
-        "period": "FY2024–25 (7 Dec 2024 – 30 Jun 2025)",
+        "period": "FY2024–25 SID (7 Dec 2024 – 30 Jun 2025)",
         "csit_tsmit": 73150,
         "ssit": 135000,
         "dama_90": 65835,
