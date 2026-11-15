@@ -1,6 +1,6 @@
 {
   "as_at_date": "1 July 2026 (FY2026–27 Indexed)",
-  "last_verified_iso": "2026-11-11T22:06:38+10:00",
+  "last_verified_iso": "2026-11-16T07:40:52+10:00",
   "income_thresholds": {
     "history": [
       {
@@ -181,7 +181,7 @@
     "max_consecutive_days_unemployed": 180,
     "max_cumulative_days_total": 365,
     "effective_date": "1 July 2024 (Migration Amendment (Work Related Visa Conditions) Regulations 2024 · F2024L00776)",
-    "work_rights_during_gap": "Permitted to work for another employer in any occupation during the 180-day gap after ceasing with the approved sponsor (subject to mandatory licensing), provided the visa itself remains in effect (Division 482.5; the 180-day rule does NOT extend visa expiry). Unsponsored gap work does NOT automatically count toward the 2-year sponsored employment requirement for Subclass 186 TRT (cl 186.227)."
+    "work_rights_during_gap": "Permitted to work for ANY employer in ANY occupation during the 180-day gap after ceasing with sponsor, unless occupation requires mandatory licensing."
   },
   "ens_186_trt_rules": {
     "required_years": 2,
