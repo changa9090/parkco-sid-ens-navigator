@@ -1,6 +1,6 @@
 {
   "as_at_date": "1 July 2026 (FY2026–27 Indexed)",
-  "last_verified_iso": "2026-11-16T07:40:52+10:00",
+  "last_verified_iso": "2026-11-18T08:39:42+10:00",
   "income_thresholds": {
     "history": [
       {
@@ -60,11 +60,12 @@
         "ssit": 146576,
         "dama_90": 71481,
         "fwhit": 190100,
-        "note_ko": "현행 노미네이션 접수분 적용 (+3.8% · FWHIT $190,100)",
-        "note_en": "Current FY26–27 Nominations (+3.8% · FWHIT $190,100)"
+        "note_ko": "현행 노미네이션 접수분 적용 (Migration Regulations 1994 reg 1.03 & reg 5.42A AWOTE +3.8% 연동 · FWHIT $190,100)",
+        "note_en": "Current FY26–27 Nominations (Migration Regulations 1994 reg 1.03 & reg 5.42A AWOTE +3.8% indexation · FWHIT $190,100)"
       }
     ],
     "current_fy": "FY2026–27",
+    "authority": "Migration Regulations 1994 reg 1.03 & reg 5.42A (AWOTE indexation)",
     "csit": 79423,
     "ssit": 146576,
     "dama_90_csit": 71481,
@@ -198,7 +199,7 @@
   },
   "abf_enforcement_summary": {
     "total_sanctions": 1850,
-    "active_sanction_bars": 124,
+    "active_sanction_bars": 123,
     "prohibited_employers_count": 1,
     "by_state": {
       "QLD": 501,

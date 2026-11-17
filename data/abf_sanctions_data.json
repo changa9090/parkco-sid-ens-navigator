@@ -7,8 +7,8 @@
   "prohibited_sha256_prefix": "c89948bdd84b989b",
   "license": "CC BY 3.0 AU (Migration Act 1958 s 140K(4) & s 245AYM Statutory Public Registers)",
   "total_sanctions": 1850,
-  "active_sanction_bars": 124,
-  "historical_expired_count": 1726,
+  "active_sanction_bars": 123,
+  "historical_expired_count": 1727,
   "infringement_notices_count": 184,
   "prohibited_employers_count": 1,
   "by_state": {
@@ -1452,7 +1452,7 @@
       "imposed_date": "17-Nov-2025",
       "imposed_sort": "20251117",
       "end_date": "17-Nov-2026",
-      "is_active": true,
+      "is_active": false,
       "infringement_amount": ""
     },
     {
