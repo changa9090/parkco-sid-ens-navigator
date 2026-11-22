@@ -1,6 +1,6 @@
 {
   "as_at_date": "1 July 2026 (FY2026–27 Indexed)",
-  "last_verified_iso": "2026-11-18T08:39:42+10:00",
+  "last_verified_iso": "2026-11-23T07:40:08+10:00",
   "income_thresholds": {
     "history": [
       {
@@ -199,8 +199,8 @@
   },
   "abf_enforcement_summary": {
     "total_sanctions": 1850,
-    "active_sanction_bars": 123,
-    "prohibited_employers_count": 1,
+    "active_sanction_bars": 122,
+    "prohibited_employers_count": 3,
     "by_state": {
       "QLD": 501,
       "NSW": 449,

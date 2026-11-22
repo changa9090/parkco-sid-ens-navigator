@@ -1,16 +1,16 @@
 {
   "status": "verified_ok",
   "http_status": 200,
-  "bytes": 2827426,
+  "bytes": 2829781,
   "sha256": "e0255a228e9be260709846205b0d9ecb291002124247c62e2d1946ea496dc4e4",
   "sha256_prefix": "e0255a228e9be260",
-  "prohibited_sha256_prefix": "c89948bdd84b989b",
+  "prohibited_sha256_prefix": "8660e1d693366bb1",
   "license": "CC BY 3.0 AU (Migration Act 1958 s 140K(4) & s 245AYM Statutory Public Registers)",
   "total_sanctions": 1850,
-  "active_sanction_bars": 123,
-  "historical_expired_count": 1727,
+  "active_sanction_bars": 122,
+  "historical_expired_count": 1728,
   "infringement_notices_count": 184,
-  "prohibited_employers_count": 1,
+  "prohibited_employers_count": 3,
   "by_state": {
     "QLD": 501,
     "NSW": 449,
@@ -248,6 +248,26 @@
       "reason": "The person is subject to a migrant worker sanction",
       "imposed_date": "24-Sep-2025",
       "end_date": "24-Sep-2030"
+    },
+    {
+      "legal_name": "Ms Yi Jeong SHIN, aka Rebecca SHIN",
+      "trading_name": "N/A",
+      "abn": "N/A",
+      "state": "NSW",
+      "postcode": "",
+      "reason": "In 2024, the Federal Court of Australia found that Ms SHIN contravened a civil remedy provision of the Fair Work Act 2009 in relation to temporary visa holders, and imposed on her a pecuniary penalty of $1.6 m.",
+      "imposed_date": "19-Nov-2026",
+      "end_date": "19-Nov-2031"
+    },
+    {
+      "legal_name": "Mr Viet Quoc Mai",
+      "trading_name": "N/A",
+      "abn": "N/A",
+      "state": "SA",
+      "postcode": "",
+      "reason": "In 2025, the Federal Court of Australia found that Mr Viet Quoc Mai contravened a civil remedy provision of the Fair Work Act 2009 in relation to temporary visa holders and imposed on him to backpay workers and pay a pecuniary penalty of $265,000.",
+      "imposed_date": "19-Nov-2026",
+      "end_date": "19-Nov-2029"
     }
   ],
   "recent_sanctions": [
@@ -2222,7 +2242,7 @@
       "imposed_date": "19-May-2025",
       "imposed_sort": "20250519",
       "end_date": "19-Nov-2026",
-      "is_active": true,
+      "is_active": false,
       "infringement_amount": ""
     },
     {
